@@ -1,0 +1,154 @@
+swagger: '2.0'
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: API documentation for authentication and user management
+paths:
+  /api/auth/loginReg/register:
+    post:
+      summary: Register a new user
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User registration details
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "John Doe"
+              email:
+                type: string
+                example: "john@example.com"
+              phone:
+                type: string
+                example: "123456789"
+              password:
+                type: string
+                example: "password123"
+      responses:
+        200:
+          description: User registered successfully
+        400:
+          description: Invalid request
+
+  /api/auth/loginReg/login:
+    post:
+      summary: Login with email and password
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User login credentials
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: "john@example.com"
+              password:
+                type: string
+                example: "password123"
+      responses:
+        200:
+          description: Login successful
+        400:
+          description: Invalid credentials
+
+  /api/auth/loginReg/me:
+    get:
+      summary: Get user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token for authentication
+          required: true
+          type: string
+      responses:
+        200:
+          description: User profile fetched successfully
+        400:
+          description: Authentication failed
+
+  /api/auth/profile/getProfile:
+    get:
+      summary: Fetch user's detailed profile information
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token for authentication
+          required: true
+          type: string
+      responses:
+        200:
+          description: User profile details retrieved successfully
+        400:
+          description: Authentication failed
+
+  /api/auth/profile/updateProfile:
+    put:
+      summary: Update user's profile information
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token for authentication
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: User profile update details
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "John Doe Updated"
+              email:
+                type: string
+                example: "john_updated@example.com"
+              phone:
+                type: string
+                example: "987654321"
+      responses:
+        200:
+          description: User profile updated successfully
+        400:
+          description: Invalid request
+
+  /api/auth/profile/change-password:
+    put:
+      summary: Enables logged-in users to change their password
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer token for authentication
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Change password details
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: "john@example.com"
+              password:
+                type: string
+                example: "newPassword123"
+      responses:
+        200:
+          description: Password changed successfully
+        400:
+          description: Invalid request
