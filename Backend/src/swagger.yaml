@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: API Documentation
   version: 1.0.0
-  description: API documentation for authentication and user management
+  description: API documentation for authentication, user management, and recommendations
 paths:
   /api/auth/reg/:
     post:
@@ -152,3 +152,72 @@ paths:
           description: Password changed successfully
         400:
           description: Invalid request
+
+  /recommendation/:
+    get:
+      summary: Get the recommendation related to a specific user
+      responses:
+        200:
+          description: Recommendation retrieved successfully
+        400:
+          description: Failed to fetch recommendation
+
+    post:
+      summary: Insert a new recommendation in the database
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Data to generate the recommendation
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: string
+                example: "67461c263eae0ad102d0bafb"
+              preferences:
+                type: array
+                items:
+                  type: string
+                  example: "electronics"
+      responses:
+        200:
+          description: Recommendation generated successfully
+        400:
+          description: Invalid input
+
+  /recommendation/call-python:
+    post:
+      summary: Call Python script for generating a recommendation
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Data to pass to the Python script
+          required: true
+          schema:
+            type: object
+            properties:
+              transactions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                      example: "67461c263eae0ad102d0baf6"
+                    amount:
+                      type: number
+                      example: 200.5
+                    date:
+                      type: string
+                      format: date
+                      example: "2024-11-15"
+      responses:
+        200:
+          description: Recommendation from Python script retrieved successfully
+        400:
+          description: Failed to generate recommendation
