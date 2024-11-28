@@ -24,6 +24,19 @@ class profileController {
         return ;
         }
       }
+      static async getEmail(req: Request & { user?: JwtPayload }, res: Response): Promise<void> {
+        try {
+          const user = req.user;
+          if (!user || !user.id) {
+          res.status(401).json({ error: 'User not authenticated or invalid token' });
+           return ;
+          }
+          const profile = await profileService.getUserEmail(user.id); // Use the `id` from the token
+          res.status(200).json({ profile });
+        } catch (error: any) {
+          res.status(400).json({ error: error.message });
+        }
+      }
       
  static async updateProfile(req:Request & { user?: JwtPayload },res:Response)
  {

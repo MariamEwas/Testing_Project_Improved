@@ -7,6 +7,7 @@ class profile{
         return await User.findById(id).select('-password'); ;
 
     }
+
     static async updateProfile(id:string,name:string ,email:string , phone:string )
     {
         const updatedUser = await User.findByIdAndUpdate(
@@ -15,6 +16,11 @@ class profile{
         return updatedUser;
 
     }
+
+    static async getUserEmail(userId: string) {
+        return await User.findById(userId).select('name email');
+      }
+
     static async changePass(email:string,password:string)
     {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,7 +35,6 @@ class profile{
           }
         
           return updatedUser;
-
     }
   
 }
