@@ -1,5 +1,6 @@
-import routerLoginReg from "./UI_Layer/routes/loginRegRoutes";
-import routerProfile from "./UI_Layer/routes/profileRoutes";
+import loginRouter from "./BusinessLogic_Layer/routes/login.routes";
+import regRouter from "./BusinessLogic_Layer/routes/reg.routes";
+import profileRouter from "./BusinessLogic_Layer/routes/profile.routes";
 
 let express = require('express')
 let connectDB = require('./Database_Layer/configdb');
@@ -27,8 +28,9 @@ app.get('/', (req:any, res:any) => {
   res.send('API is running...');
 });
 
-app.use('/api/auth/loginReg',routerLoginReg );
-app.use('/api/auth/profile',routerProfile);
+app.use('/api/auth/login',loginRouter );
+app.use('/api/auth/profile',profileRouter);
+app.use('/api/auth/reg',regRouter);
 
 // Start the server
 app.listen(PORT, () => {

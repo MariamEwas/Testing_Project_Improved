@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API documentation for authentication and user management
 paths:
-  /api/auth/loginReg/register:
+  /api/auth/reg/:
     post:
       summary: Register a new user
       consumes:
@@ -35,7 +35,7 @@ paths:
         400:
           description: Invalid request
 
-  /api/auth/loginReg/login:
+  /api/auth/login/:
     post:
       summary: Login with email and password
       consumes:
@@ -60,7 +60,7 @@ paths:
         400:
           description: Invalid credentials
 
-  /api/auth/loginReg/me:
+  /api/auth/profile/get-email:
     get:
       summary: Get user profile
       parameters:
@@ -75,7 +75,7 @@ paths:
         400:
           description: Authentication failed
 
-  /api/auth/profile/getProfile:
+  /api/auth/profile/get-profile:
     get:
       summary: Fetch user's detailed profile information
       parameters:
@@ -90,7 +90,7 @@ paths:
         400:
           description: Authentication failed
 
-  /api/auth/profile/updateProfile:
+  /api/auth/profile/update-profile:
     put:
       summary: Update user's profile information
       consumes:
