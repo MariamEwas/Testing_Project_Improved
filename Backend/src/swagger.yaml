@@ -221,3 +221,4 @@ paths:
           description: Recommendation from Python script retrieved successfully
         400:
           description: Failed to generate recommendation
+  
