@@ -7,6 +7,8 @@ const login_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/log
 const reg_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/reg.routes"));
 const profile_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/profile.routes"));
 const recommendation_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/recommendation.routes"));
+const budget_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/budget.routes"));
+const transaction_routes_1 = __importDefault(require("./BusinessLogic_Layer/routes/transaction.routes"));
 let express = require('express');
 let connectDB = require('./Database_Layer/configdb');
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
@@ -30,6 +32,8 @@ app.use('/api/auth/login', login_routes_1.default);
 app.use('/api/auth/profile', profile_routes_1.default);
 app.use('/api/auth/reg', reg_routes_1.default);
 app.use('/recommendation', recommendation_routes_1.default);
+app.use('/budgets', budget_routes_1.default);
+app.use('/transactions', transaction_routes_1.default);
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

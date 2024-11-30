@@ -2,6 +2,9 @@ import loginRouter from "./BusinessLogic_Layer/routes/login.routes";
 import regRouter from "./BusinessLogic_Layer/routes/reg.routes";
 import profileRouter from "./BusinessLogic_Layer/routes/profile.routes";
 import RecommendationRouter from './BusinessLogic_Layer/routes/recommendation.routes'
+import BudgetRouter from './BusinessLogic_Layer/routes/budget.routes'
+import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes'
+
 let express = require('express')
 let connectDB = require('./Database_Layer/configdb');
 import swaggerUi from 'swagger-ui-express';
@@ -30,6 +33,9 @@ app.use('/api/auth/login',loginRouter );
 app.use('/api/auth/profile',profileRouter);
 app.use('/api/auth/reg',regRouter);
 app.use('/recommendation',RecommendationRouter);
+app.use('/budgets',BudgetRouter);
+app.use('/transactions',TransactionRouter);
+
 
 
 // Start the server
