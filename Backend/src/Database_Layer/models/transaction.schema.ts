@@ -21,6 +21,7 @@ const transactionSchema = new mongoose.Schema({
     },
     description: {
       type: String,
+      required: false,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId, // FK referencing User
