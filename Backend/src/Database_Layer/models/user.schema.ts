@@ -7,6 +7,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   phone:string;
+  total_income: number;
 
   comparePassword(password: string): Promise<boolean>;
 }
@@ -31,6 +32,10 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  total_income:{
+  type: Number,
+  required: true,
   },
 });
 userSchema.pre('save',async function (next){

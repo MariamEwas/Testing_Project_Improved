@@ -20,8 +20,8 @@ class TransactionController {
         res.status(401).json({ error: 'User not authenticated or invalid token' });
          return ;
         }
-    // console.log(user.id);
-      const transactions = await TransactionService.getAllTransactions(user.id);
+      const queryParams = req.query;      
+      const transactions = await TransactionService.getAllTransactions(user.id,queryParams);
       res.status(200).json(transactions);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
