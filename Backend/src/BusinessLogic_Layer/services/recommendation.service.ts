@@ -5,12 +5,12 @@ class recommendation{
 
     static async getRecommendations(userId:string)
     {
-        let user_recommendations = Recommendation.find({userId:userId})
+        let user_recommendations = await Recommendation.find({userId:userId})
         return user_recommendations;
     }
 
     static async createRecommendation(data:{text:string,userId:string}){
-        let newRecommendation = Recommendation.create(data);
+        let newRecommendation = await Recommendation.create(data);
         return newRecommendation;
     }
   

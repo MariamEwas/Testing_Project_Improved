@@ -10,8 +10,10 @@ class BudgetService {
     if (!Types.ObjectId.isValid(userId)) {
       throw new Error("Invalid User ID");
     }
-
-    const budgets = await Budget.find({ userId }).populate("category");
+    console.log(userId);
+    let ID = new Types.ObjectId(userId);
+    console.log(ID);
+    const budgets = await Budget.find({ userId:ID });
     if (!budgets.length) {
       throw new Error("No budgets found for the user.");
     }

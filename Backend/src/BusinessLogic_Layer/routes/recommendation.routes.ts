@@ -9,6 +9,6 @@ router.get('/', authenticateToken, RecommendationController.getRecommendations);
 
 router.post('/', authenticateToken, RecommendationController.createRecommendation);
 
-router.post('/call-python',RecommendationController.generateRecommendation);
+router.post('/call-python',authenticateToken,RecommendationController.generateRecommendation);
 
 export default router;
