@@ -21,7 +21,7 @@ static async getAllTransactions(userId: string, queryParams: any) {
 
     let startDate: Date;  // Variable to store the calculated date
 
-    const currentDate = moment();  // Get the current date
+    const currentDate = moment('2019-01-28');  // Set the date to 1st Jan, 2019
 
     // Step 3: Determine the startDate based on the 'date' parameter
     switch (date) {
@@ -35,7 +35,7 @@ static async getAllTransactions(userId: string, queryParams: any) {
         startDate = currentDate.subtract(1, 'year').startOf('year').toDate(); // Get start of last year
         break;
       default:
-        startDate = currentDate.subtract(1, 'year').startOf('year').toDate(); // Default to last year if no valid date param
+        startDate = currentDate.subtract(1, 'year').startOf('day').toDate(); // Default to last year if no valid date param
     }
 
     // Step 4: Add the 'date' filter to the filter object

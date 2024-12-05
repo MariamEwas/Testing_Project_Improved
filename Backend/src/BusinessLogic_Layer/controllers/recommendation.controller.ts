@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import recommendation from '../services/recommendation.service';
+import recommendationService from '../services/recommendation.service';
 import { JwtPayload } from 'jsonwebtoken';
 import axios from 'axios';
 import TransactionService from '../services/transaction.service';
@@ -20,13 +20,13 @@ class RecommendationController {
           return ;
         }  
         try {
-          const user_recommendations = await recommendation.getRecommendations(id);
+          const user_recommendations = await recommendationService.getRecommendations(id);
           if (!user_recommendations) {
              res.status(404).json({ error: 'recs not found' });
           }
           res.status(200).json({ user_recommendations });
         } catch (error) {    
-            res.status(500).json({ error: 'Something went wrong' });
+            res.status(500).json({ error: 'Something went wrong' }); 
         }
       }
 
@@ -39,8 +39,8 @@ class RecommendationController {
            return ;
           }
           
-          const new_recommendation = await recommendation.createRecommendation(req.body) // Use the `id` from the token
-          
+          const new_recommendation = await recommendationService.createRecommendation(req.body) // Use the `id` from the token
+          new_recommendation.save();
           
           res.status(200).json({ new_recommendation });
 
@@ -51,22 +51,26 @@ class RecommendationController {
 
 
 
-    static async generateRecommendation(req: Request & { user?: JwtPayload }, res: Response): Promise<void> {
+    static async generateRecommendation(req: Request& { user?: JwtPayload }, res: Response): Promise<void> {
         
         try{
-            //const pythonApiUrl = process.env.PYTHON_URL;
-            const user = req.user;
+
+          const user = req.user;
             if (!user || !user.id) {
             res.status(401).json({ error: 'User not authenticated or invalid token' });
              return ;
             }
-            const form = new FormData();
+            const form = new FormData() ;  
 
-            let Alltransactions_data = await Transaction.find({userId:user.id}).populate('category').lean();
+            let Alltransactions_data = await Transaction.find({userId:user.id}).lean();
+
+            Alltransactions_data =Alltransactions_data.filter(trans => trans.type ==='expense' && trans.date <= new Date('02-10-2019'));
             const jsonDataInstance_transaction = new JSONData(Alltransactions_data);
             const adapter_transaction = new JSONToCSVAdapter(jsonDataInstance_transaction,['_id','description','type']);
             const csvData_transaction = adapter_transaction.exportToCSV();
            
+
+
             let AllBudget_data = await Budget.find({userId : user.id}).lean();
             const jsonDataInstance_budget = new JSONData(AllBudget_data);
             const adapter_budget = new JSONToCSVAdapter(jsonDataInstance_budget);
@@ -89,9 +93,8 @@ class RecommendationController {
                 },
             });
 
-            console.log(response.data) ;
-            let recommend = {text:response.data,userId:user.id};
-            await recommendation.createRecommendation(recommend);
+            let recommend = {text:response.data.recommends,userId:user.id};
+            await recommendationService.createRecommendation(recommend);
 
             res.status(200).json(response.data);
 
