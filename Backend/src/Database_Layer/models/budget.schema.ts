@@ -8,7 +8,7 @@ const BudgetSchema = new mongoose.Schema({
       required: true,
     },
 
-    spent: {
+    total_spent: {
       type: Number,
       required: true,
     },

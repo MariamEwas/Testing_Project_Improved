@@ -9,9 +9,10 @@ import { Request, Response } from "express";
 import TransactionService from "../services/transaction.service";
 import { JwtPayload } from 'jsonwebtoken';
 
+const transactionService = new TransactionService();
 
 class TransactionController {
-
+ 
 
   async getAllTransactions(req: Request  & { user?: JwtPayload }, res: Response) {
     try {
@@ -21,7 +22,7 @@ class TransactionController {
          return ;
         }
       const queryParams = req.query;      
-      const transactions = await TransactionService.getAllTransactions(user.id,queryParams);
+      const transactions = await transactionService.getAllTransactions(user.id,queryParams);
       res.status(200).json(transactions);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -39,7 +40,7 @@ class TransactionController {
           return;
         }
         
-      const transaction = await TransactionService.getTransactionById(req.params.id, user.id);
+      const transaction = await transactionService.getTransactionById(req.params.id, user.id);
       res.status(200).json(transaction);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -58,7 +59,7 @@ class TransactionController {
           return;
         }
 
-      const transaction = await TransactionService.addTransaction({ ...req.body, userId: user.id });
+      const transaction = await transactionService.addTransaction({ ...req.body, userId: user.id });
       res.status(201).json(transaction);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -76,24 +77,13 @@ class TransactionController {
           res.status(401).json({ error: "User not authenticated or invalid token" });
           return;
         }
-      const transaction = await TransactionService.deleteTransaction(req.params.id, user.id);
+      const transaction = await transactionService.deleteTransaction(req.params.id, user.id);
       res.status(200).json({ message: "Transaction deleted successfully", transaction });
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
       }
   }
 
-
-
-
-//   async updateTransaction(req: Request & { user?: JwtPayload }, res: Response) {
-//     try {
-//       const transaction = await TransactionService.updateTransaction(req.params.id, req.user._id, req.body);
-//       res.status(200).json(transaction);
-//     } catch (err: unknown) {
-//         res.status(500).json({ error: (err as Error).message });
-//       }
-//   }
 }
 
 export default new TransactionController();
