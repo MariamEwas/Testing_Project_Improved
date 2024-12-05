@@ -84,7 +84,7 @@ class BudgetService {
     }
 
     if (updateData.limit !== undefined) budget.limit = updateData.limit;
-    if (updateData.spent !== undefined) budget.spent = updateData.spent;
+    if (updateData.spent !== undefined) budget.total_spent = updateData.spent;
 
     return await budget.save();
   }
