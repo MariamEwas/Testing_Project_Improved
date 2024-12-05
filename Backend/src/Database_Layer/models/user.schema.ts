@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   total_income:{
   type: Number,
-  required: true,
+  required: false,
   },
 });
 userSchema.pre('save',async function (next){
