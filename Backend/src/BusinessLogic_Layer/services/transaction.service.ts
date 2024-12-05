@@ -1,178 +1,167 @@
 // transaction.service.ts
-import mongoose from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 import Transaction from '../../Database_Layer/models/transaction.schema';
 import Budget from '../../Database_Layer/models/budget.schema';
 import User from '../../Database_Layer/models/user.schema';
+import Category from "../../Database_Layer/models/category.schema";
 import moment from 'moment';
+
+// solid/clean code paradigms used =>
+
+// descriptive endpoint names
+// separation of concerns : filters handled separately
+// imperative programming : Logic for Adding and Reversing Transactions
+// declarative programming : MongoDB methods
+// destructuring : const { type, category, amount, userId } = transactionData;
+// dependency injection in constructor
 
 
 class TransactionService {
 
-  constructor(){};
+// Constructor to handle dependency injection for better testability
+constructor(private transactionModel = Transaction, private budgetModel = Budget, private userModel = User, private categoryModel = Category) {}
 
-
-static async getAllTransactions(userId: string, queryParams: any) {
-  // Step 1: Start with the basic filter for the userId
-  let filter: Record<string, any> = { userId };  // Explicitly type as Record<string, any>
-
-  // Step 2: Check if the 'date' query parameter exists
-  if (queryParams.date) {
-    const { date } = queryParams;  // Get the 'date' parameter from the query
-
-    let startDate: Date;  // Variable to store the calculated date
-
-    const currentDate = moment();  // Get the current date
-
-    // Step 3: Determine the startDate based on the 'date' parameter
-    switch (date) {
-      case 'last-week':
-        startDate = currentDate.subtract(1, 'week').startOf('week').toDate(); // Get start of last week
-        break;
-      case 'last-month':
-        startDate = currentDate.subtract(1, 'month').startOf('month').toDate(); // Get start of last month
-        break;
-      case 'last-year':
-        startDate = currentDate.subtract(1, 'year').startOf('year').toDate(); // Get start of last year
-        break;
-      default:
-        startDate = currentDate.subtract(1, 'year').startOf('year').toDate(); // Default to last year if no valid date param
-    }
-
-    // Step 4: Add the 'date' filter to the filter object
-    filter = {
-      ...filter,
-      date: { $gte: startDate }  // Only get transactions where the date is after the startDate
-    };
+// Utility method: Validate MongoDB ObjectID
+private isValidObjectId(id: string): boolean {
+    return mongoose.Types.ObjectId.isValid(id);
   }
 
-  // Step 5: Fetch the transactions from the database
-  const transactions = await Transaction.find(filter).populate("category");
+  async getAllTransactions(userId: string, queryParams: any) {
+    let filter: Record<string, any> = { userId }; // Base filter for the user
   
-  return transactions;  // Return the filtered transactions
-}
-
-  
-//   static async getAllTransactions(userId: string) {
-// //    console.log(userId);
-//    const tr = await Transaction.find({ userId }).populate("category");
-// //    console.log(tr);
-//    return tr  ;
-
-//   }
-
-
-
-   static async getTransactionById(id: string, userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid transaction ID");
-    }
-
-    const transaction = await Transaction.findOne({ _id: id, userId }).populate("category");
-    if (!transaction) throw new Error("Transaction not found");
-    return transaction;
-  }
-
-
-
-
-  static async addTransaction(transactionData: any) {
-    const { type, category, amount, userId } = transactionData;
-  
-    // Validate the category ID
-    if (!mongoose.Types.ObjectId.isValid(category)) {
-      throw new Error("Invalid category ID");
+    // Apply date filter if provided
+    if (queryParams.date) {
+      filter.date = { $gte: this.getStartDate(queryParams.date) };
     }
   
-    if (type === "expense") {
-      // Handle expenses
-      const budget = await Budget.findOne({ category, userId });
-      if (!budget) throw new Error("No budget found for this category");
-      if (budget.spent + amount > budget.limit) throw new Error("Budget limit exceeded");
-  
-      // Update spent in the budget
-      budget.spent += amount;
-      await budget.save();
-
-    } else if (type === "income") {
-      // Handle income
-      const user = await User.findById(userId);
-      if (!user) throw new Error("User not found");
-  
-      // Update total_income for the user
-      user.total_income = (user.total_income || 0) + amount;
-      await user.save();
-
-    } else {
-      throw new Error("Invalid transaction type. Must be 'income' or 'expense'.");
-    }
-  
-    // Create the transaction
-    return await Transaction.create(transactionData);
-  }
-  
-
-
-  static async deleteTransaction(id: string, userId: string) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new Error("Invalid transaction ID");
-    }
-  
-    // Find and delete the transaction
-    const transaction = await Transaction.findOneAndDelete({ _id: id, userId });
-    if (!transaction) throw new Error("Transaction not found");
-  
-    if (transaction.type === "expense") {
-      // Update the budget spent for expense transactions
-      const budget = await Budget.findOne({ category: transaction.category, userId });
-      if (budget) {
-        budget.spent -= transaction.amount;
-        await budget.save();
+    // Apply category filter if provided
+    if (queryParams.category) {
+      const categoryFilter = await this.getCategoryFilter(queryParams.category);
+      if (categoryFilter) {
+        filter.category = { $in: categoryFilter }; // Match ObjectId(s) of categories
       }
-    } else if (transaction.type === "income") {
-      // Update the total_income for income transactions
-      const user = await User.findById(userId);
-      if (!user) throw new Error("User not found");
-  
-      user.total_income = (user.total_income || 0) - transaction.amount;
-      await user.save();
-    } else {
-      throw new Error("Invalid transaction type. Must be 'income' or 'expense'.");
     }
   
-    return transaction;
+    return await this.transactionModel.find(filter).populate('category');
+  }
+  
+  // Single responsibility: Extract logic to calculate start date
+  private getStartDate(dateRange: string): Date {
+    const currentDate = moment();
+    switch (dateRange) {
+      case 'last-week':
+        return currentDate.subtract(1, 'week').startOf('week').toDate();
+      case 'last-month':
+        return currentDate.subtract(1, 'month').startOf('month').toDate();
+      case 'last-year':
+        return currentDate.subtract(1, 'year').startOf('year').toDate();
+      default:
+        return currentDate.subtract(1, 'year').startOf('year').toDate();
+    }
+  }
+  
+  // Single responsibility: Extract logic to calculate category filter
+  private async getCategoryFilter(categoryName: string): Promise<mongoose.Types.ObjectId[] | null> {
+    const categoryRegex = new RegExp(categoryName, 'i'); // Case-insensitive regex for category name
+  
+    // Query the Category model to find matching categories
+    const matchingCategories = await this.categoryModel.find({ name: categoryRegex }).exec();
+  
+    if (matchingCategories.length === 0) return null; // No matching categories
+  
+    // Return the ObjectIds of matching categories
+    return matchingCategories.map((category) => category._id);
   }
   
 
 
+   // Get transaction by ID
+  async getTransactionById(id: string, userId: string) {
 
-  
-//   async updateTransaction(id: string, userId: string, updateData: any) {
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       throw new Error("Invalid transaction ID");
-//     }
+    if (!this.isValidObjectId(id)) throw new Error("Invalid transaction ID");
 
-//     const transaction = await Transaction.findOne({ _id: id, userId });
-//     if (!transaction) throw new Error("Transaction not found");
+    const transaction = await this.transactionModel.findOne({ _id: id, userId }).populate("category");
+    if (!transaction) throw new Error("Transaction not found");
+    return transaction;
+  }
 
-//     const { type, category, amount } = updateData;
 
-//     // Adjust the budget if it's an expense and the amount or category changes
-//     if (type === "expense" && (amount !== transaction.amount || category !== transaction.category)) {
-//       const oldBudget = await Budget.findOne({ category: transaction.category, userId });
-//       const newBudget = await Budget.findOne({ category, userId });
 
-//       if (oldBudget) oldBudget.spent -= transaction.amount;
-//       if (newBudget) {
-//         if (newBudget.spent + amount > newBudget.limit) throw new Error("Budget limit exceeded");
-//         newBudget.spent += amount;
-//       }
 
-//       await oldBudget?.save();
-//       await newBudget?.save();
-//     }
+  // Add a new transaction
+  async addTransaction(transactionData: any) {
+    const { type, category, amount, userId } = transactionData;
 
-//     return await Transaction.findOneAndUpdate({ _id: id, userId }, updateData, { new: true });
-//   }
+    if (!this.isValidObjectId(category)) throw new Error("Invalid category ID");
+
+    if (type === "expense") {
+      await this.handleExpenseTransaction(category, amount, userId);
+    } else if (type === "income") {
+      await this.handleIncomeTransaction(amount, userId);
+    } else {
+      throw new Error("Invalid transaction type. Must be 'income' or 'expense'.");
+    }
+
+    return await this.transactionModel.create(transactionData);
+  }
+
+  // Single responsibility: Handle expense logic
+  private async handleExpenseTransaction(category: string, amount: number, userId: string) {
+    const budget = await this.budgetModel.findOne({ category, userId });
+
+    if (!budget) throw new Error("No budget found for this category");
+    if (budget.total_spent + amount > budget.limit) throw new Error("Budget limit exceeded");
+
+    budget.total_spent += amount;
+    await budget.save();
+  }
+
+  // Single responsibility: Handle income logic
+  private async handleIncomeTransaction(amount: number, userId: string) {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) throw new Error("User not found");
+
+    user.total_income = (user.total_income || 0) + amount;
+    await user.save();
+  }
+
+
+
+  // Delete a transaction
+  async deleteTransaction(id: string, userId: string) {
+    if (!this.isValidObjectId(id)) throw new Error("Invalid transaction ID");
+
+    const transaction = await this.transactionModel.findOneAndDelete({ _id: id, userId });
+    if (!transaction) throw new Error("Transaction not found");
+
+    if (transaction.type === "expense") {
+      await this.reverseExpenseTransaction(transaction.category, transaction.amount, userId);
+    } else if (transaction.type === "income") {
+      await this.reverseIncomeTransaction(transaction.amount, userId);
+    }
+
+    return transaction;
+  }
+
+  // Single responsibility: Reverse expense logic
+  private async reverseExpenseTransaction(category: Types.ObjectId , amount: number, userId: string) {
+    const budget = await this.budgetModel.findOne({ category, userId });
+    if (budget) {
+      budget.total_spent -= amount;
+      await budget.save();
+    }
+  }
+
+  // Single responsibility: Reverse income logic
+  private async reverseIncomeTransaction(amount: number, userId: string) {
+    const user = await this.userModel.findById(userId);
+    if (user) {
+      user.total_income = (user.total_income || 0) - amount;
+      await user.save();
+    }
+  }
+
 
 }
 
