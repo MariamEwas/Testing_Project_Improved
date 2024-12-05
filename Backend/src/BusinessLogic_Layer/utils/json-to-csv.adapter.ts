@@ -63,7 +63,7 @@ class JSONToCSVAdapter implements CSVExporter {
         })
         .join(",")
     );
-   
+    
     return [header, ...rows].join("\n");
   }
 }
