@@ -4,6 +4,7 @@ import { VisService } from "../services/vis.service";
 import { JwtPayload } from "jsonwebtoken";
 import authenticateToken from "../Middleware/AuthMiddleware";
 
+//=================================================================================================
 
 class VisController {
     private VisService: VisService;
@@ -84,51 +85,51 @@ class VisController {
         }
     }
 //=================================================================================================
-    // async getTotalSpentMoney(req: Request & { user?: JwtPayload }, res: Response) {
-    //     try {
-    //       const userId = req.user?.id;
-    //       if (!userId) {
-    //          res.status(401).json({ error: "Sorry Unauthorized :(" });
-    //          return;
-    //       }
-    
-    //       const spentMoneyByCategory = await this.VisService.getTotalSpentMoney(userId);
-    //       res.status(200).json({ spentMoneyByCategory });
-    //     } catch (error:any) {
-    //       res.status(500).json({ error: error.message });
-    //     }
-    // }
+    async getTotalSpentMoney(req: Request & { user?: JwtPayload }, res: Response) {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                res.status(401).json({ error: "Sorry Unauthorized :(" });
+                return;
+            }
+
+            const totalSpentMoney = await this.VisService.getTotalSpentMoney(userId);
+            res.status(200).json({ totalSpentMoney });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
 //=================================================================================================
     async getSpentLast30Days(req: Request & { user?: JwtPayload }, res: Response) {
-    try {
-        // Get the authenticated user ID
-      const userId = req.user?.id;  
-      if (!userId) {
-         res.status(401).json({ error: "Sorry Unauthorized :(" });
-         return;
-      }
-  
-      const totalSpent30Days = await this.VisService.getSpentLast30Days(userId);
-      res.status(200).json({ totalSpent30Days });
-    } catch (error:any) {
-      res.status(500).json({ error: error.message });
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                res.status(401).json({ error: "Sorry Unauthorized :(" });
+                return;
+            }
+
+            const totalSpent30Days = await this.VisService.getSpentLast30Days(userId); // Call service method
+            res.status(200).json({ totalSpent30Days });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
     }
-  }
 //=================================================================================================
     async getSpentLast12Months(req: Request & { user?: JwtPayload }, res: Response) {
-    try {
-      const userId = req.user?.id;
-      if (!userId) {
-         res.status(401).json({ error: "Sorry Unauthorized :(" });
-         return;
-      }
-  
-      const totalSpent12Months = await this.VisService.getSpentLast12Months(userId);
-      res.status(200).json({ totalSpent12Months });
-    } catch (error:any) {
-      res.status(500).json({ error: error.message });
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                res.status(401).json({ error: "Sorry Unauthorized :(" });
+                return;
+         }
+
+            const totalSpent12Months = await this.VisService.getSpentLast12Months(userId); // Call service method
+            res.status(200).json({ totalSpent12Months });
+        } catch (error: any) {
+            res.status(500).json({ error: error.message });
+        }
     }
-}
 //=================================================================================================
 
 }
