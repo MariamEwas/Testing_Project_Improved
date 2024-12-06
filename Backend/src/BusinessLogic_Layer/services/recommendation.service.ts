@@ -19,5 +19,6 @@ class RecommendationService {
         return newRecommendation;
 
 }
+}
 export default RecommendationService;
 
