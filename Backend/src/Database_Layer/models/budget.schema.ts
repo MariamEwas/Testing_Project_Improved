@@ -11,6 +11,7 @@ const BudgetSchema = new mongoose.Schema({
     total_spent: {
       type: Number,
       required: true,
+      default:0
     },
 
     limit: {
