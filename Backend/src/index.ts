@@ -4,7 +4,7 @@ import profileRouter from "./BusinessLogic_Layer/routes/profile.routes";
 import RecommendationRouter from './BusinessLogic_Layer/routes/recommendation.routes'
 import BudgetRouter from './BusinessLogic_Layer/routes/budget.routes'
 import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes'
-
+import VisRouter from "./BusinessLogic_Layer/routes/vis.routes";
 let express = require('express')
 let connectDB = require('./Database_Layer/configdb');
 import swaggerUi from 'swagger-ui-express';
@@ -35,7 +35,7 @@ app.use('/api/auth/reg',regRouter);
 app.use('/recommendation',RecommendationRouter);
 app.use('/budgets',BudgetRouter);
 app.use('/transactions',TransactionRouter);
-
+app.use('/visualisations',VisRouter);
 
 
 // Start the server

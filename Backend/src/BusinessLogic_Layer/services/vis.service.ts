@@ -1,92 +1,123 @@
-// Visualisation Service Class
-import TransactionService from "./transaction.service";
-import Transaction from '../../Database_Layer/models/transaction.schema';
-import moment from "moment";
-import Budget from "../../Database_Layer/models/budget.schema";
-const transactionService = new TransactionService();
+import TransactionService from "./transaction.service"; 
+import Transaction from '../../Database_Layer/models/transaction.schema'; 
+import moment from "moment"; 
+import Budget from "../../Database_Layer/models/budget.schema"; 
+
+// Create an instance of TransactionService to use it the methods
+const transactionService = new TransactionService(); 
 //=================================================================================================
 
 export class VisService {
   
 //=================================================================================================
+    // Calculate the total income for a user based on transactions
     async getTotalIncome(userId: string, queryParams: any): Promise<number> {
-        const transactions = await transactionService.getAllTransactions(userId, queryParams);
+        // Fetch all transactions for the user
+        const transactions = await transactionService.getAllTransactions(userId, queryParams); 
         return transactions
-            .filter((t) => t.type === "income")
-            .reduce((sum, t) => sum + t.amount, 0);
+        // Filter transactions to include only incomes
+            .filter((t) => t.type === "income") 
+            //  reduce mathod used to aggregate data from an array of transactions by
+            //  iterating through each element
+            //  Sum the amounts of all income transactions
+            .reduce((sum, t) => sum + t.amount, 0); 
     }
 //=================================================================================================
+    // Calculate the total expenses for a user based on transactions
     async getTotalExpenses(userId: string, queryParams: any): Promise<number> {
-        const transactions = await transactionService.getAllTransactions(userId, queryParams);
+        // Fetch all transactions for the user
+        const transactions = await transactionService.getAllTransactions(userId, queryParams); 
         return transactions
-            .filter((t) => t.type === "expense")
-            .reduce((sum, t) => sum + t.amount, 0);
+        // Filter transactions to include only expenses
+            .filter((t) => t.type === "expense") 
+            //  reduce mathod used to aggregate data from an array of transactions by
+            //  iterating through each element
+            // Sum the amounts of all expense transactions
+            .reduce((sum, t) => sum + t.amount, 0); 
     }
     
 //=================================================================================================
+    // Calculate the balance 
     async getBalance(userId: string, queryParams: any): Promise<number> {
-        const income = await this.getTotalIncome(userId, queryParams);
+        const income = await this.getTotalIncome(userId, queryParams); 
         const expenses = await this.getTotalExpenses(userId, queryParams);
-        return income - expenses;
+        return income - expenses; 
     }
 //=================================================================================================
+    // Find the minimum expense amount for a user
     async getMinExpense(userId: string, queryParams: any): Promise<number> {
-        const transactions = await transactionService.getAllTransactions(userId, queryParams);
-        const expenses = transactions.filter((t) => t.type === "expense");
-        return Math.min(...expenses.map((t) => t.amount));
+        // Fetch all transactions for the user
+        const transactions = await transactionService.getAllTransactions(userId, queryParams); 
+        // Filter transactions to include only expenses
+        const expenses = transactions.filter((t) => t.type === "expense"); 
+        return Math.min(...expenses.map((t) => t.amount)); 
     }
 //=================================================================================================
+    // Find the maximum expense amount for a user
     async getMaxExpense(userId: string, queryParams: any): Promise<number> {
+         // Fetch all transactions for the user
         const transactions = await transactionService.getAllTransactions(userId, queryParams);
-        const expenses = transactions.filter((t) => t.type === "expense");
-        return Math.max(...expenses.map((t) => t.amount));
+        // Filter transactions to include only expenses
+        const expenses = transactions.filter((t) => t.type === "expense"); 
+        return Math.max(...expenses.map((t) => t.amount)); 
     }
 //=================================================================================================
+    // Calculate the total spent money for a user from the budget collection
     async getTotalSpentMoney(userId: string): Promise<number> {
-      if (!userId) {
-          throw new Error("User ID is required");
+        if (!userId) {
+            throw new Error("User ID is required"); 
         }
 
-      const totalSpent = await Budget.aggregate([
-          { $match: { userId } }, 
-          { $group: { _id: null, totalSpent: { $sum: "$spent" } } } 
+        const totalSpent = await Budget.aggregate([
+            // Match budgets belonging to the given user
+            { $match: { userId } }, 
+             // Sum up the "spent" field for all matched budgets
+            { $group: { _id: null, totalSpent: { $sum: "$spent" } } }
         ]);
+        // Throw an error if no budget records are found
+        if (!totalSpent.length) {
+            throw new Error("No budget found"); 
+        }
 
-      if (!totalSpent.length) {
-         throw new Error("No budget found");
-     }
-
-     return totalSpent[0].totalSpent; 
-}
+        return totalSpent[0].totalSpent;
+    }
 //=================================================================================================
-  async getSpentLast30Days(userId: string): Promise<number> {
-    if (!userId) {
-        throw new Error("User ID is required");
-   }
+    // Calculate the total expenses in the last 30 days 
+    async getSpentLast30Days(userId: string): Promise<number> {
+        if (!userId) {
+            throw new Error("User ID is required"); 
+        }
 
-    const startDate = moment().subtract(30, 'days').toDate();
-    const transactions = await Transaction.find({
-        userId,
-        type: "expense",
-        date: { $gte: startDate } 
-    });
-
-    return transactions.reduce((sum, t) => sum + t.amount, 0); 
-  } 
+        const startDate = moment().subtract(30, 'days').toDate(); 
+        const transactions = await Transaction.find({
+            // Match transactions belonging to the user
+            userId, 
+            type: "expense", 
+            // Filter for transactions from the last 30 days
+            date: { $gte: startDate } 
+        });
+        //  reduce mathod used to aggregate data from an array of transactions by
+        //  iterating through each element
+        // Sum the amounts of the filtered transactions
+        return transactions.reduce((sum, t) => sum + t.amount, 0); 
+    } 
 //=================================================================================================
-  async getSpentLast12Months(userId: string): Promise<number> {
-    if (!userId) {
-        throw new Error("User ID is required");
-   }
+    // Calculate the total expenses in the last 12 months 
+    async getSpentLast12Months(userId: string): Promise<number> {
+        if (!userId) {
+            throw new Error("User ID is required");
+        }
 
-    const startDate = moment().subtract(12, 'months').toDate();
-    const transactions = await Transaction.find({
-        userId,
-       type: "expense",
-       date: { $gte: startDate } // Only include transactions from the last 12 months
-    });
+        const startDate = moment().subtract(12, 'months').toDate(); 
+        const transactions = await Transaction.find({
+            // Match transactions belonging to the user
+            userId, 
+            type: "expense", 
+            // Filter for transactions from the last 12 months
+            date: { $gte: startDate } 
+        });
 
-    return transactions.reduce((sum, t) => sum + t.amount, 0); // Calculate the total amount  
-  }
+        return transactions.reduce((sum, t) => sum + t.amount, 0); 
+    }
 //=================================================================================================
 }
