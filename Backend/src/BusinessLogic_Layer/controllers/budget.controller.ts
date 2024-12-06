@@ -44,11 +44,11 @@ class BudgetController {
       const userId = req.user?.id;
       if (!userId) throw new Error("User ID not found in request.");
 
-      const budgetId = req.params.id;
+
       const updateData = req.body;
 
 
-      const updatedBudget = await BudgetService.editBudget(budgetId, updateData, userId);
+      const updatedBudget = await BudgetService.editBudget(updateData, userId);
       res.status(200).json(updatedBudget);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -64,6 +64,7 @@ class BudgetController {
       if (!userId) throw new Error("User ID not found in request.");
 
       const budgetId = req.params.id;
+      console.log(budgetId);
 
       const deletedBudget = await BudgetService.deleteBudget(budgetId, userId);
       res.status(200).json(deletedBudget);

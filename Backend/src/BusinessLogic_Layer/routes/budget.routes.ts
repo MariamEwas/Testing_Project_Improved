@@ -14,6 +14,6 @@ router.post("/add-budget", authenticateToken, BudgetController.addBudget);
 router.put("/my-budgets", authenticateToken, BudgetController.editBudget);
 
 // Delete a budget
-router.delete("/my-budgets", authenticateToken, BudgetController.deleteBudget);
+router.delete("/my-budgets/:id", authenticateToken, BudgetController.deleteBudget);
 
 export default router;

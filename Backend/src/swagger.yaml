@@ -93,6 +93,62 @@ paths:
       responses:
         '200':
           description: Recommendations data
+    post:
+      summary: Insert a new recommendation in the database
+      consumes:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: "67461c263eae0ad102d0bafb"
+                preferences:
+                  type: array
+                  items:
+                    type: string
+                    example: "electronics"
+      responses:
+        '200':
+          description: Recommendation generated successfully
+        '400':
+          description: Invalid input
+  /recommendation/call-python:
+    post:
+      summary: Call Python script for generating a recommendation
+      consumes:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      category:
+                        type: string
+                        example: "67461c263eae0ad102d0baf6"
+                      amount:
+                        type: number
+                        example: 200.5
+                      date:
+                        type: string
+                        format: date
+                        example: "2024-11-15"
+      responses:
+        '200':
+          description: Recommendation from Python script retrieved successfully
+        '400':
+          description: Failed to generate recommendation
   /budgets/my-budgets:
     get:
       summary: Get all budgets for the authenticated user
@@ -102,26 +158,6 @@ paths:
           description: A list of budgets for the user
         '401':
           description: Unauthorized
-    post:
-      summary: Add a new budget for the authenticated user
-      operationId: addBudget
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                category:
-                  type: string
-                limit:
-                  type: number
-                  format: float
-      responses:
-        '201':
-          description: Budget created
-        '400':
-          description: Invalid input
     put:
       summary: Edit an existing budget for the authenticated user
       operationId: editBudget
@@ -144,10 +180,35 @@ paths:
           description: Invalid input
     delete:
       summary: Delete a budget for the authenticated user
+      parameters:
+          schema:
+            type: string
+            description: "Authenticated budget ID."
       operationId: deleteBudget
       responses:
         '200':
           description: Budget deleted successfully
+  /budgets/add-budget:
+    post:
+      summary: Add a new budget for the authenticated user
+      operationId: addBudget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                limit:
+                  type: number
+                  format: float
+      responses:
+        '201':
+          description: Budget created
+        '400':
+          description: Invalid input
   /transactions:
     get:
       summary: Get all transactions for the authenticated user
@@ -233,12 +294,6 @@ paths:
       operationId: "getTotalIncome"
       security:
         - cookieAuth: []
-      parameters:
-        - in: query
-          name: user
-          schema:
-            type: string
-            description: "Authenticated user ID."
       responses:
         '200':
           description: "Returns the total income for the user."
