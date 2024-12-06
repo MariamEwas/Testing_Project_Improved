@@ -19,5 +19,6 @@ class recommendationService {
         return newRecommendation;
     }
   
+
 }
-export default recommendationService ;
+export default recommendationService;

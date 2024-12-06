@@ -81,7 +81,7 @@ class TransactionController {
       res.status(200).json({ message: "Transaction deleted successfully", transaction });
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
-      }
+    }
   }
 
 }

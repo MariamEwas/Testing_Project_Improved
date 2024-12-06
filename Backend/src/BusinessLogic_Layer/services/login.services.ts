@@ -1,17 +1,22 @@
 import User, { IUser } from '../../Database_Layer/models/user.schema';
-import jwt from 'jsonwebtoken';
 
 class loginServies {
+  // Function to handle user login
+  async loginUser(email: string, password: string, res: any) {
+    // Find user by email
+    const user = await User.findOne({ email });
 
-static async loginUser(email:string ,password:string )
-{
- const user = await User.findOne({email});
- if(!user||!(await user.comparePassword(password)))
-     throw new Error ('Invalid email or passwrod');
-  
- const token =jwt.sign({id:user._id},process.env.JWT_SECRET as string,{expiresIn:'1h'})
-  return {token , user}
- }
+    // If user not found or password doesn't match, throw an error
+    if (!user || !(await user.comparePassword(password))) {
+      throw new Error('Invalid email or password');
+    }
 
+    // Remove the password from the user object before returning
+    const { password: _password, ...userWithoutPassword } = user.toObject();
+    
+    // Return the user without the password field
+    return userWithoutPassword;
+  }
 }
-export default loginServies ;
+
+export default loginServies;

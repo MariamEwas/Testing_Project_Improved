@@ -1,41 +1,40 @@
 import User, { IUser } from '../../Database_Layer/models/user.schema';
 import bcrypt from 'bcryptjs';
-class profile{
-    constructor(){};
-    static async getUserProfile(id:string)
-    {
-        return await User.findById(id).select('-password'); ;
 
+class ProfileService {
+    // Get the user's profile, excluding the password
+    async getUserProfile(id: string) {
+        return await User.findById(id).select('-password');
     }
 
-    static async updateProfile(id:string,name:string ,email:string , phone:string )
-    {
+    // Update user's profile with new name, email, and phone
+    async updateProfile(id: string, name: string, email: string, phone: string) {
         const updatedUser = await User.findByIdAndUpdate(
-            id,{name,email,phone},{new:true}
+            id, { name, email, phone }, { new: true }
         );
         return updatedUser;
-
     }
 
-    static async getUserEmail(userId: string) {
+    // Get the user's name and email by user ID
+    async getUserEmail(userId: string) {
         return await User.findById(userId).select('name email');
-      }
+    }
 
-    static async changePass(email:string,password:string)
-    {
-        const hashedPassword = await bcrypt.hash(password, 10);
+    // Change the user's password (hashes the new password)
+    async changePass(email: string, password: string) {
+        const hashedPassword = await bcrypt.hash(password, 10);  // Hash password before saving
         const updatedUser = await User.findOneAndUpdate(
             { email },
             { password: hashedPassword },
             { new: true }
-          );
-        
-          if (!updatedUser) {
+        );
+
+        if (!updatedUser) {
             throw new Error('User not found');
-          }
-        
-          return updatedUser;
+        }
+
+        return updatedUser;
     }
-  
 }
-export default profile ;
+
+export default ProfileService;
