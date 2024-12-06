@@ -17,8 +17,7 @@ class RecommendationService {
         let newRecommendation = await Recommendation.create(data);
         newRecommendation.save();
         return newRecommendation;
-    }
-
 
 }
 export default RecommendationService;
+
