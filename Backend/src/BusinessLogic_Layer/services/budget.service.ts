@@ -51,22 +51,21 @@ class BudgetService {
 
   // edit a budget for user
   async editBudget(
-    budgetId: string,
-    updateData: { limit?: number; spent?: number; category?: string },
+    updateData: { budgetId:string ,limit?: number; spent?: number; category?: string },
     userId: string
   ) {
-    if (!Types.ObjectId.isValid(budgetId) || !Types.ObjectId.isValid(userId)) {
+    if (!Types.ObjectId.isValid(updateData.budgetId) || !Types.ObjectId.isValid(userId)) {
       throw new Error("Invalid Budget ID or User ID");
     }
 
-    const budget = await Budget.findOne({ _id: budgetId, userId });
+    const budget = await Budget.findOne({ _id: updateData.budgetId, userId });
     if (!budget) {
       throw new Error("Budget not found.");
     }
 
     // Handle category update by name
     if (updateData.category) {
-      const newCategory = await Category.findOne({ name: updateData.category });
+      const newCategory = await Category.findById(updateData.category);
       if (!newCategory) {
         throw new Error("Category not found.");
       }
@@ -76,7 +75,7 @@ class BudgetService {
         category: newCategory._id,
         userId,
       });
-      if (duplicateBudget && duplicateBudget._id.toString() !== budgetId) {
+      if (duplicateBudget && duplicateBudget._id.toString() !== updateData.budgetId) {
         throw new Error("A budget for this category already exists.");
       }
 

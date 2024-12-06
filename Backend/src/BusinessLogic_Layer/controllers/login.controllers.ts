@@ -39,6 +39,7 @@ class LoginController {
       res.status(200).json({
         message: 'Login successful',
         user,
+        token 
       });
       return;
     } catch (error: any) {
