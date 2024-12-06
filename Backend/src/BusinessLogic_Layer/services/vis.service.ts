@@ -2,6 +2,7 @@ import TransactionService from "./transaction.service";
 import Transaction from '../../Database_Layer/models/transaction.schema'; 
 import moment from "moment"; 
 import Budget from "../../Database_Layer/models/budget.schema"; 
+import mongoose from "mongoose";
 
 // Create an instance of TransactionService to use it the methods
 const transactionService = new TransactionService(); 
@@ -68,11 +69,12 @@ export class VisService {
             throw new Error("User ID is required"); 
         }
 
+        let ID = new mongoose.Types.ObjectId(userId);
         const totalSpent = await Budget.aggregate([
             // Match budgets belonging to the given user
-            { $match: { userId } }, 
+            { $match: { userId:ID } }, 
              // Sum up the "spent" field for all matched budgets
-            { $group: { _id: null, totalSpent: { $sum: "$spent" } } }
+            { $group: { _id: null, totalSpent: { $sum: "$total_spent" } } }
         ]);
         // Throw an error if no budget records are found
         if (!totalSpent.length) {
