@@ -1,6 +1,6 @@
 import Budget from '../../Database_Layer/models/budget.schema';
 import Category from '../../Database_Layer/models/category.schema';
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 class BudgetService {
 
@@ -10,10 +10,13 @@ class BudgetService {
     if (!Types.ObjectId.isValid(userId)) {
       throw new Error("Invalid User ID");
     }
-    console.log(userId);
+
+    //convert the ID as string to ObjectId to retrieve from the database
     let ID = new Types.ObjectId(userId);
-    console.log(ID);
+
+    //get all budgets related to the user from the database 
     const budgets = await Budget.find({ userId:ID });
+
     if (!budgets.length) {
       throw new Error("No budgets found for the user.");
     }
@@ -27,17 +30,23 @@ class BudgetService {
     limit: number;
     userId: string;
   }) {
+    
+    //Object destructring 
     const { category, limit, userId } = budgetData;
 
+    //no mongo ObjectId found for (userId/category) 
     if (!Types.ObjectId.isValid(userId) || !Types.ObjectId.isValid(category)) {
       throw new Error("Invalid User ID or Category ID");
     }
 
+    //If found an budget for this category, throw an error
     const existingBudget = await Budget.findOne({ category, userId });
+
     if (existingBudget) {
       throw new Error("A budget for this category already exists.");
     }
 
+    //create the budget for this category
     const newBudget = new Budget({
       category,
       limit,
@@ -51,37 +60,23 @@ class BudgetService {
 
   // edit a budget for user
   async editBudget(
-    updateData: { budgetId:string ,limit?: number; spent?: number; category?: string },
+    updateData: { budgetId:string ,limit?: number; spent?: number;},
     userId: string
   ) {
+
+        //no mongo ObjectId found for (userId/category) 
     if (!Types.ObjectId.isValid(updateData.budgetId) || !Types.ObjectId.isValid(userId)) {
       throw new Error("Invalid Budget ID or User ID");
     }
 
-    const budget = await Budget.findOne({ _id: updateData.budgetId, userId });
+    //update the budget by the data come to the method
+    let ID = new mongoose.Types.ObjectId(userId)
+    const budget = await Budget.findOne({ _id: updateData.budgetId, userId:ID });
     if (!budget) {
       throw new Error("Budget not found.");
     }
 
-    // Handle category update by name
-    if (updateData.category) {
-      const newCategory = await Category.findById(updateData.category);
-      if (!newCategory) {
-        throw new Error("Category not found.");
-      }
-
-      // Check if another budget exists with this category
-      const duplicateBudget = await Budget.findOne({
-        category: newCategory._id,
-        userId,
-      });
-      if (duplicateBudget && duplicateBudget._id.toString() !== updateData.budgetId) {
-        throw new Error("A budget for this category already exists.");
-      }
-
-      budget.category = newCategory._id; // Update the category reference
-    }
-
+    //update the limit and spent of the budget
     if (updateData.limit !== undefined) budget.limit = updateData.limit;
     if (updateData.spent !== undefined) budget.total_spent = updateData.spent;
 
@@ -95,7 +90,8 @@ class BudgetService {
       throw new Error("Invalid Budget ID or User ID");
     }
 
-    const budget = await Budget.findOneAndDelete({ _id: budgetId, userId });
+    //find the budget and delte it from the database
+    const budget = await Budget.findByIdAndDelete(budgetId);
     if (!budget) {
       throw new Error("Budget not found or already deleted.");
     }
@@ -105,4 +101,4 @@ class BudgetService {
 }
 
 
-export default new BudgetService();
+export default  BudgetService;
