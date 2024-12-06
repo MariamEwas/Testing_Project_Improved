@@ -9,9 +9,11 @@ import { Request, Response } from "express";
 import TransactionService from "../services/transaction.service";
 import { JwtPayload } from 'jsonwebtoken';
 
-const transactionService = new TransactionService();
+//const transactionService = new TransactionService();
 
 class TransactionController {
+
+   constructor(private transactionService: TransactionService ){}
  
 
   async getAllTransactions(req: Request  & { user?: JwtPayload }, res: Response) {
@@ -22,7 +24,7 @@ class TransactionController {
          return ;
         }
       const queryParams = req.query;      
-      const transactions = await transactionService.getAllTransactions(user.id,queryParams);
+      const transactions = await this.transactionService.getAllTransactions(user.id,queryParams);
       res.status(200).json(transactions);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -40,7 +42,7 @@ class TransactionController {
           return;
         }
         
-      const transaction = await transactionService.getTransactionById(req.params.id, user.id);
+      const transaction = await this.transactionService.getTransactionById(req.params.id, user.id);
       res.status(200).json(transaction);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -59,7 +61,7 @@ class TransactionController {
           return;
         }
 
-      const transaction = await transactionService.addTransaction({ ...req.body, userId: user.id });
+      const transaction = await this.transactionService.addTransaction({ ...req.body, userId: user.id });
       res.status(201).json(transaction);
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -77,7 +79,7 @@ class TransactionController {
           res.status(401).json({ error: "User not authenticated or invalid token" });
           return;
         }
-      const transaction = await transactionService.deleteTransaction(req.params.id, user.id);
+      const transaction = await this.transactionService.deleteTransaction(req.params.id, user.id);
       res.status(200).json({ message: "Transaction deleted successfully", transaction });
     } catch (err: unknown) {
         res.status(500).json({ error: (err as Error).message });
@@ -86,4 +88,4 @@ class TransactionController {
 
 }
 
-export default new TransactionController();
+export default TransactionController;
