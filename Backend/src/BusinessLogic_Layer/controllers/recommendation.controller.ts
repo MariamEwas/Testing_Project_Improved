@@ -6,6 +6,7 @@ import JSONToCSVAdapter from '../utils/json-to-csv.adapter';
 import budgetService from '../services/budget.service';
 import PythonService from '../services/python.service';
 import TransactionService from '../services/transaction.service';
+import BudgetService from '../services/budget.service';
 
 
 class RecommendationController {
@@ -13,7 +14,8 @@ class RecommendationController {
   //inject services that will be needed in the controller
   constructor(private recommendationService: RecommendationService,
     private pythonService: PythonService,
-    private transactionService: TransactionService) {
+    private transactionService: TransactionService ,
+    private budgetService :BudgetService) {
   }
 
 
@@ -97,7 +99,7 @@ class RecommendationController {
 
 
       //Get All budgets fron The budgetService and map them to appropriate fromat to use in adpater& python api
-      let AllBudget_data = await budgetService.getAllBudgets(user.id);
+      let AllBudget_data = await this.budgetService.getAllBudgets(user.id);
       let budget_data = AllBudget_data.map(budget => ({
         limit: budget.limit,
         category: budget.category._id,
