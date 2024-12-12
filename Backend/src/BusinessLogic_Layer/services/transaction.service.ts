@@ -65,7 +65,7 @@ private isValidObjectId(id: string): boolean {
     const categoryRegex = new RegExp(categoryName, 'i'); // Case-insensitive regex for category name
   
     // Query the Category model to find matching categories
-    const matchingCategories = await this.categoryModel.find({ name: categoryRegex }).exec();
+    const matchingCategories = await this.categoryModel.find({ category: categoryRegex }).exec();
   
     if (matchingCategories.length === 0) return null; // No matching categories
   
