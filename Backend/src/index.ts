@@ -7,7 +7,7 @@ import BudgetRouter from './BusinessLogic_Layer/routes/budget.routes';
 import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes';
 import cookieParser from 'cookie-parser';
 import visRouter from './BusinessLogic_Layer/routes/vis.routes';
-import cors from 'cors'; // Import CORS
+import cors from 'cors'; 
 
 let express = require('express');
 let connectDB = require('./Database_Layer/configdb');

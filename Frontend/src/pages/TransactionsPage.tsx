@@ -1,14 +1,21 @@
 import React from 'react';
 import TransactionList from '../components/TransactionList'; // Adjust the import path based on your folder structure
+import AddTransaction from '../components/AddTransaction';
+import './TransactionPage.css';  // Import the custom CSS file for the page
 
 const TransactionPage: React.FC = () => {
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <header style={{ marginBottom: '20px' }}>
-        <h1 style={{ textAlign: 'center', color: '#4CAF50' }}>Transaction Management</h1>
+    <div className="transaction-page">
+      <header>
+        <h1>Transaction Management</h1>
       </header>
       <main>
-        <TransactionList />
+        <div className="add-transaction">
+          <AddTransaction />
+        </div>
+        <div className="transaction-list">
+          <TransactionList />
+        </div>
       </main>
     </div>
   );
