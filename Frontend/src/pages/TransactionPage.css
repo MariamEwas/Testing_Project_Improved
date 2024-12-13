@@ -1,0 +1,198 @@
+/* Reset and general styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fb; /* Light background color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    color: #333;
+  }
+  
+  /* Page container */
+  .transaction-page {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    background-color: #f4f7fb; /* Ensure consistent background color */
+  }
+  
+  /* Header styling */
+  header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    color: #1e88e5; /* Primary blue color */
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  /* Main content */
+  main {
+    width: 100%;
+    display: flex;
+    flex-direction: row; /* Use row direction to place form and list side by side */
+    justify-content: space-between; /* Space between form and list */
+    gap: 40px;
+    flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
+    background-color: #f4f7fb; /* Ensure background is consistent */
+  }
+  
+  /* Form Styling */
+  .add-transaction {
+    flex: 1; /* Takes up available space */
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+  }
+  
+  .add-transaction form {
+    font-size: 1.1rem;
+  }
+  
+  .add-transaction form div {
+    margin-bottom: 20px;
+  }
+  
+  .add-transaction label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .add-transaction input,
+  .add-transaction select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+  }
+  
+  .add-transaction input:focus,
+  .add-transaction select:focus {
+    border-color: #1e88e5; /* Primary blue color */
+    outline: none;
+  }
+  
+  .add-transaction button {
+    background-color: #1e88e5; /* Primary blue color */
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-transaction button:disabled {
+    background-color: #b0bec5;
+  }
+  
+  .add-transaction button:hover:enabled {
+    background-color: #1565c0; /* Darker blue on hover */
+  }
+  
+  /* Transaction List Styling */
+  .transaction-list {
+    flex: 2; /* Takes up more space */
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+  
+  .transaction-list h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .transaction-item {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .transaction-item:hover {
+    background: #e8f5e9; /* Light green hover */
+    transform: scale(1.02);
+  }
+  
+  .transaction-item p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  .transaction-item .transaction-type {
+    font-weight: 600;
+    color: #1e88e5; /* Primary blue color */
+  }
+  
+  .transaction-item .transaction-amount {
+    font-weight: bold;
+    color: #388e3c; /* Green for positive amounts */
+  }
+  
+  .transaction-item .transaction-amount.negative {
+    color: #d32f2f; /* Red for negative amounts */
+  }
+  
+  /* Responsive layout for smaller screens */
+  @media (max-width: 768px) {
+    .transaction-page {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    main {
+      flex-direction: column; /* Stack form and list vertically */
+      gap: 20px;
+    }
+  
+    .add-transaction,
+    .transaction-list {
+      width: 100%;
+    }
+  
+    .add-transaction {
+      max-width: 100%;
+      padding: 20px;
+    }
+  
+    .transaction-list {
+      padding: 15px;
+    }
+  }
+  
