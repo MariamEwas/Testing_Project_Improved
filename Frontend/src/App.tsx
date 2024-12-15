@@ -1,12 +1,31 @@
 // import React from 'react';
+import {  BrowserRouter as Router,Route, Routes, Navigate } from 'react-router-dom';
 import TransactionPage from './pages/TransactionsPage';
+import ShowRecommendations from './components/ShowRecommendation';
+import { Suspense } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
+import RecommendationPage from './pages/RecommendationPage';
+import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+    <div>
       <h1>Personal Finance Tracker</h1>
-      <TransactionPage />
+      <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LoginPage/>} /> 
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/transactions" element={<TransactionPage />} />
+        <Route path="/recommendations" element={<RecommendationPage />} />
+        <Route path="/home" element={<HomePage />} />
+
+      </Routes>
     </div>
+  </Router>
   );
 }
 
