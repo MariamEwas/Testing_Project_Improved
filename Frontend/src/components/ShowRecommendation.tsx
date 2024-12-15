@@ -1,0 +1,87 @@
+import { Suspense, useEffect, useState } from 'react';
+import { Recommendation } from '../types/recommendation';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorBoundary from './ErrorBoundary';
+import React from 'react';
+import { recommendationService } from '../services/recommendation.service';
+import RecommendationList from './RecommendationList';
+
+const ShowRecommendations = () => {
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRecommendations = recommendations.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Pagination handlers
+  const totalPages = Math.ceil(recommendations.length / itemsPerPage);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+
+  useEffect(() => {
+    const getRecommendations = async () => {
+      try {
+        const response = await recommendationService.getRecommendations();
+        setRecommendations(response);
+      } catch (error) {
+        setError('Error loading recommendations');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    getRecommendations();
+  });
+
+  
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <div className="p-4">
+      <h2>Recommendations</h2>
+      <table style={{maxWidth:600}}> 
+        <tbody>
+          {currentRecommendations.map((recommendation) => (
+            <tr key={recommendation._id}>
+              <td>{recommendation.text}<br/><br/></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}> Previous </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
+  );
+};
+
+export default function App() {
+  return (
+    <div>
+      <ErrorBoundary fallback={<p>Error loading recommendations. Please try again later.</p>}>
+        <Suspense fallback={<LoadingSpinner />}>
+          <ShowRecommendations />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
+  );
+}
