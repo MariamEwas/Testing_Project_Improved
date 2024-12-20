@@ -7,6 +7,8 @@ import BudgetRouter from './BusinessLogic_Layer/routes/budget.routes';
 import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes';
 import cookieParser from 'cookie-parser';
 import visRouter from './BusinessLogic_Layer/routes/vis.routes';
+import CategoryRouter from './BusinessLogic_Layer/routes/category.routes';
+
 import cors from 'cors'; 
 
 let express = require('express');
@@ -52,6 +54,8 @@ app.use('/recommendation', RecommendationRouter);
 app.use('/budgets', BudgetRouter);
 app.use('/transactions', TransactionRouter);
 app.use('/analytics', visRouter);
+app.use('/category', CategoryRouter);
+
 
 // Start the server
 app.listen(PORT, () => {

@@ -1,0 +1,105 @@
+/* Container for the grid layout */
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  /* Individual budget item styles */
+  .budget-item {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .budget-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Style for the budget category name */
+  .budget-category {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  /* Style for the budget image */
+  .budget-image {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  /* Style for the budget limit and total spent */
+  .budget-value {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 4px;
+  }
+  
+  /* Optional styling for the headings */
+  h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+ 
+  
+  /* Optional styling for the <p> separator */
+  p {
+    text-align: center;
+    margin: 20px 0;
+    color: #aaa;
+  }
+  
+
+  .limit-slider {
+    width: 70px;
+    margin: 10px 0;
+  }
+
+
+
+
+   /* Overall container for the page */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;  /* Space between sections */
+  padding: 20px;
+}
+
+/* Top section for the budgets */
+.top-section {
+  width: 100%;
+  margin-bottom: 30px;  /* Space between top and bottom sections */
+  border-bottom: 1px solid #ccc;
+  padding-bottom:10px;
+}
+
+/* Bottom section (flex container) */
+.bottom-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;  /* Push the left and right sections to the edges */
+  gap: 40px;  /* Space between the left and right sections */
+}
+
+/* Left section (recommendations) */
+.left-section {
+  flex: 1;  /* Take up remaining space on the left */
+  min-width: 200px;  /* Optional, if you want to limit the width */
+}
+
+/* Right section (Generate Recommendation) */
+.right-section {
+  flex: 1;  /* Take up remaining space on the right */
+  min-width: 200px;  /* Optional, if you want to limit the width */
+}

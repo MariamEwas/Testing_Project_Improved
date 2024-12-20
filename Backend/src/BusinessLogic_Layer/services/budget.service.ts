@@ -15,7 +15,7 @@ class BudgetService {
     let ID = new Types.ObjectId(userId);
 
     //get all budgets related to the user from the database 
-    const budgets = await Budget.find({ userId:ID });
+    const budgets = await Budget.find({ userId:ID }).populate('category');
 
     if (!budgets.length) {
       throw new Error("No budgets found for the user.");
@@ -65,7 +65,7 @@ class BudgetService {
   ) {
 
         //no mongo ObjectId found for (userId/category) 
-    if (!Types.ObjectId.isValid(updateData.budgetId) || !Types.ObjectId.isValid(userId)) {
+    if (!Types.ObjectId.isValid(updateData.budgetId) ||  !Types.ObjectId.isValid(userId)) {
       throw new Error("Invalid Budget ID or User ID");
     }
 

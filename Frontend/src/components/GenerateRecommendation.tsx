@@ -1,10 +1,8 @@
-import { Suspense, useEffect, useState } from 'react';
-import { Recommendation } from '../types/recommendation';
+import { Suspense, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
-import React from 'react';
 import { recommendationService } from '../services/recommendation.service';
-
+import '../styles/recommendation.css'
 export const GenerateRecommendation = () => {
   const [recommendation, setRecommendation] = useState<String>('');
   const [loading, setLoading] = useState(false);
@@ -14,7 +12,7 @@ export const GenerateRecommendation = () => {
   function handleClick(){
     setRecommendation('');
     setLoading(true);
-    
+    setError('');
     const GenerateRecommendation = async () => {
         try {
           const response = await recommendationService.generateRecommendation();
@@ -33,18 +31,22 @@ export const GenerateRecommendation = () => {
 //   if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">New Recommendation !</h2>
-        <button onClick={handleClick}> Generate A new Recommendation</button>
-        {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+    <div className="recommendation-container">
+      <h2 className="recommendation-header">New Recommendation!</h2>
+      <button className="recommendation-button" onClick={handleClick}>
+        Generate a New Recommendation ✨
+      </button>
+      {loading && <p className="loading-text">Generating a recommendation...</p>}
+      {error && <p className="error-text">{error}</p>}
       {recommendation && (
-        <div>
-          <h2>Data:</h2>
-          <pre>{JSON.stringify(recommendation, null, 2)}</pre>
+        <div className="recommendation-data">
+          <h2>Recommends:</h2>
+          <p className='text'>{JSON.stringify(recommendation, null, 2)}</p>
         </div>
       )}
     </div>
+
+
   );
 };
 

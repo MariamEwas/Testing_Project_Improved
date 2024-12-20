@@ -56,7 +56,7 @@ class BudgetController {
       const userId = req.user?.id;
       if (!userId) throw new Error("User ID not found in request.");
 
-
+      console.log(req.body);
       const updateData = req.body;
 
       //get the data from the service
