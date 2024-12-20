@@ -25,7 +25,7 @@ export const recommendationService = {
   async generateRecommendation():Promise<String>{
     const response = await axiosInstance.post('/recommendation/call-python');
     console.log(response.data);
-    return response.data;
+    return response.data.recommends;
   }
 
 };

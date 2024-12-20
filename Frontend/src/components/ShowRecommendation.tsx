@@ -2,16 +2,14 @@ import { Suspense, useEffect, useState } from 'react';
 import { Recommendation } from '../types/recommendation';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
-import React from 'react';
 import { recommendationService } from '../services/recommendation.service';
-import RecommendationList from './RecommendationList';
 
 const ShowRecommendations = () => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 4;
 
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -44,7 +42,7 @@ const ShowRecommendations = () => {
     };
     
     getRecommendations();
-  });
+  },[]);
 
   
 

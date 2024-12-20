@@ -1,8 +1,5 @@
-export interface Category {
-    _id: string;
-    category: string;
-    category_img: string;
-  }
+import { Category } from "./category";
+
   
   export interface Transaction {
     _id: string;

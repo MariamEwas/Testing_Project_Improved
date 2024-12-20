@@ -5,7 +5,7 @@ import ShowRecommendations from './components/ShowRecommendation';
 import { Suspense } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
-import RecommendationPage from './pages/RecommendationPage';
+import BudgetPage from './pages/BudgetPage';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -20,7 +20,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>} /> 
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<TransactionPage />} />
-        <Route path="/recommendations" element={<RecommendationPage />} />
+        <Route path="/recommendations" element={<BudgetPage />} />
         <Route path="/home" element={<HomePage />} />
 
       </Routes>
