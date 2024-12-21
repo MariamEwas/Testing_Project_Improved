@@ -1,0 +1,159 @@
+/* Scope the styles with .dashboard-page */
+html, body {
+   
+    overflow-y: auto; /* Enable scrolling for the body */
+}
+.dashboard-page {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    overflow-y: auto; /* Enable scrolling for the body */
+  }
+  
+  .dashboard-container {
+    padding: 20px;
+    background-color: #f7f5ff; /* Light purple background */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 80%;
+    position: absolute;
+    top: 0;
+    left: 150px;
+    overflow-y: auto;
+  }
+  
+  .dashboard-page .profile-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-page .profile-details {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  .dashboard-page .greeting {
+    font-size: 30px;
+    font-weight: bold;
+    color: #4b2c7f; /* Purple color */
+  }
+  
+  .dashboard-page .profile-item {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #6a4d9e;
+  }
+  
+  .dashboard-page .error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-page .divider-line {
+    border: 0;
+    height: 2px;
+    background-color: rgba(255, 105, 180, 0.7); /* Soft pink */
+    margin: 20px 0;
+  }
+  
+  .dashboard-page .dashboard-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-page .dashboard-heading {
+    font-size: 28px;
+    color: #4b2c7f; /* Purple color */
+  }
+  
+  .dashboard-page .dashboard-description {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #6a4d9e;
+  }
+  
+  .dashboard-page .love-message {
+    font-size: 18px;
+    color: #e7a1d9; /* Pinkish love message */
+    margin-top: 15px;
+  }
+  
+  .dashboard-page form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 80%;
+  }
+  
+  .dashboard-page form div {
+    margin-bottom: 15px;
+  }
+  
+  .dashboard-page form label {
+    font-size: 16px;
+    color: #4b2c7f;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .dashboard-page form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .dashboard-page form input:focus {
+    outline: none;
+    border-color: #4b2c7f;
+  }
+  
+  .dashboard-page form button {
+    background-color: #4b2c7f;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .dashboard-page form button:hover {
+    background-color: #3a2061;
+  }
+  
+  .dashboard-page button {
+    background-color: #4b2c7f;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 10px;
+  }
+  
+  .dashboard-page button:hover {
+    background-color: #3a2061;
+  }
+  
+  .dashboard-page button[type="button"] {
+    background-color: #ccc;
+  }
+  
+  .dashboard-page button[type="button"]:hover {
+    background-color: #b0b0b0;
+  }
+  

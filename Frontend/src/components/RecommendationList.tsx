@@ -6,6 +6,7 @@ interface RecommendationListProps {
 
 export default function RecommendationList({ recommendations }: RecommendationListProps) {
   return (
+    <div className='recomendationlis'>
     <ul className="space-y-4">
       {recommendations.map((recommendation) => (
         <li key={recommendation._id} className="bg-white shadow rounded-lg p-4">
@@ -14,6 +15,7 @@ export default function RecommendationList({ recommendations }: RecommendationLi
         </li>
       ))}
     </ul>
+    </div>
   );
 }
 

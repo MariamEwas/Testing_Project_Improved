@@ -2,7 +2,7 @@ import { Suspense, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorBoundary from './ErrorBoundary';
 import { recommendationService } from '../services/recommendation.service';
-import '../styles/recommendation.css'
+// import '../styles/recommendation.css'
 export const GenerateRecommendation = () => {
   const [recommendation, setRecommendation] = useState<String>('');
   const [loading, setLoading] = useState(false);
@@ -31,6 +31,7 @@ export const GenerateRecommendation = () => {
 //   if (error) return <p>{error}</p>;
 
   return (
+    <div className='recomendation'>
     <div className="recommendation-container">
       <h2 className="recommendation-header">New Recommendation!</h2>
       <button className="recommendation-button" onClick={handleClick}>
@@ -44,6 +45,7 @@ export const GenerateRecommendation = () => {
           <p className='text'>{JSON.stringify(recommendation, null, 2)}</p>
         </div>
       )}
+    </div>
     </div>
 
 

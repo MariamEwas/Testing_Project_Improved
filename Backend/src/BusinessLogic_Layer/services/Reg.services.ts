@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 class regServies {
    constructor(){};
-   static async registerUser(name:string   ,email:string ,phone:string,password:string )
+   static async registerUser(name:string  ,email:string ,phone:string,password:string )
    {
         const user = await User.findOne({email});
         if (user)

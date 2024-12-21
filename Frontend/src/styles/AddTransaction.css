@@ -1,11 +1,11 @@
-/* Basic reset for margin and padding */
+/* 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
   
-  /* Set the body to use flexbox and center content */
+  
   body {
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -90,4 +90,4 @@
     margin-bottom: 15px;
     text-align: center;
   }
-  
+   */

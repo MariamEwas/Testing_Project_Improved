@@ -55,8 +55,8 @@ const ShowBudget = () => {
   }
 
   return (
-<div className="p-4">
-  <h2>Budgets</h2>
+    <div className='budget '>
+<div className="p-4"><h2>Budgets</h2>
   <div className="budget-grid">
   {budgets.map((budget) => (
     <div key={budget._id} className="budget-item">
@@ -97,7 +97,7 @@ const ShowBudget = () => {
 </div>
 
   </div>
-
+  </div>
 
   );
 };

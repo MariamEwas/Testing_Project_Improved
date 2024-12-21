@@ -2,9 +2,14 @@ import ShowRecommendations from '../components/ShowRecommendation';
 import GenerateRecommendation from '../components/GenerateRecommendation';
 import ShowBudget from '../components/ShowBudget';
 import '../styles/budget.css'
+import '../components/layout'
+import '../styles/layout.css'
+import Layout from '../components/layout';
 const RecommendationPage = () => {
   
   return (
+    <div>
+      <Layout> </Layout>
     <div className="page-container">
   <div className="top-section">
     <ShowBudget />
@@ -20,7 +25,7 @@ const RecommendationPage = () => {
     </div>
   </div>
 </div>
-
+</div>
   )
 }
 

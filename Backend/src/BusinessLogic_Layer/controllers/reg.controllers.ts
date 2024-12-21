@@ -6,6 +6,7 @@ static async register (req:Request,res:Response)
 {
     const {name ,email,phone ,password}=req.body;
     try {
+        console.log("here ");
         const user =await regService.registerUser(name ,email,phone,password);
         res.status(201).json({message:'User registered successfully!',user});
     }
