@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { transactionsService } from '../services/transactions.service';
-import { Category, Transaction } from '../types/transaction';
-import './AddTransaction.css';  // Import the CSS file
+import { Transaction } from '../types/transaction';
+import { Category } from '../types/category';
+// import './AddTransaction.css';  // Import the CSS file
 
 const AddTransaction: React.FC = () => {
   const categories: Category[] = [
@@ -79,13 +80,14 @@ const AddTransaction: React.FC = () => {
   };
 
   return (
+    <div className="add-transaction-container">
     <div className="add-transaction">
       <h2 className="form-header">Add Transaction</h2>
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
       <form onSubmit={handleSubmit} className="transaction-form">
         <div className="form-group">
-          <label htmlFor="type">Type</label>
+          <label htmlFor="type" className="form-label">Type</label>
           <select
             name="type"
             value={formData.type || ''}
@@ -98,7 +100,7 @@ const AddTransaction: React.FC = () => {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="category">Category</label>
+          <label htmlFor="category" className="form-label">Category</label>
           <select
             name="category"
             value={formData.category?._id || ''}
@@ -106,18 +108,14 @@ const AddTransaction: React.FC = () => {
             required
             className="form-control"
           >
-            <option value="" disabled>
-              Select a category
-            </option>
+            <option value="" disabled>Select a category</option>
             {categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.category}
-              </option>
+              <option key={category._id} value={category._id}>{category.category}</option>
             ))}
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="amount">Amount</label>
+          <label htmlFor="amount" className="form-label">Amount</label>
           <input
             type="number"
             name="amount"
@@ -129,7 +127,7 @@ const AddTransaction: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="date">Date</label>
+          <label htmlFor="date" className="form-label">Date</label>
           <input
             type="date"
             name="date"
@@ -140,7 +138,7 @@ const AddTransaction: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="description">Description (Optional)</label>
+          <label htmlFor="description" className="form-label">Description (Optional)</label>
           <input
             type="text"
             name="description"
@@ -154,6 +152,12 @@ const AddTransaction: React.FC = () => {
         </button>
       </form>
     </div>
+  
+    <div className="table-container">
+      {/* Table content here */}
+    </div>
+  </div>
+  
   );
 };
 

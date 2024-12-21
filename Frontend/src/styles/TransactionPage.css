@@ -1,4 +1,4 @@
-/* Reset and general styles */
+/* 
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@
   
   body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f7fb; /* Light background color */
+    background-color: #f4f7fb; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,7 +16,7 @@
     color: #333;
   }
   
-  /* Page container */
+ 
   .transaction-page {
     width: 100%;
     max-width: 1200px;
@@ -25,10 +25,8 @@
     flex-direction: column;
     align-items: center;
     gap: 40px;
-    background-color: #f4f7fb; /* Ensure consistent background color */
+    background-color: #f4f7fb; 
   }
-  
-  /* Header styling */
   header {
     width: 100%;
     text-align: center;
@@ -37,26 +35,25 @@
   
   h1 {
     font-size: 2.5rem;
-    color: #1e88e5; /* Primary blue color */
+    color: #1e88e5; 
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
-  
-  /* Main content */
+
   main {
     width: 100%;
     display: flex;
-    flex-direction: row; /* Use row direction to place form and list side by side */
-    justify-content: space-between; /* Space between form and list */
+    flex-direction: row;
+    justify-content: space-between; 
     gap: 40px;
-    flex-wrap: wrap; /* Allow elements to wrap on smaller screens */
-    background-color: #f4f7fb; /* Ensure background is consistent */
+    flex-wrap: wrap;
+    background-color: #f4f7fb; 
   }
   
-  /* Form Styling */
+
   .add-transaction {
-    flex: 1; /* Takes up available space */
+    flex: 1; 
     max-width: 600px;
     background-color: #ffffff;
     padding: 30px;
@@ -92,12 +89,12 @@
   
   .add-transaction input:focus,
   .add-transaction select:focus {
-    border-color: #1e88e5; /* Primary blue color */
+    border-color: #1e88e5; 
     outline: none;
   }
   
   .add-transaction button {
-    background-color: #1e88e5; /* Primary blue color */
+    background-color: #1e88e5; 
     color: #fff;
     border: none;
     padding: 12px;
@@ -113,12 +110,12 @@
   }
   
   .add-transaction button:hover:enabled {
-    background-color: #1565c0; /* Darker blue on hover */
+    background-color: #1565c0; 
   }
   
-  /* Transaction List Styling */
+
   .transaction-list {
-    flex: 2; /* Takes up more space */
+    flex: 2; 
     width: 100%;
     max-width: 800px;
     background: #ffffff;
@@ -142,7 +139,7 @@
   }
   
   .transaction-item:hover {
-    background: #e8f5e9; /* Light green hover */
+    background: #e8f5e9; 
     transform: scale(1.02);
   }
   
@@ -154,19 +151,18 @@
   
   .transaction-item .transaction-type {
     font-weight: 600;
-    color: #1e88e5; /* Primary blue color */
+    color: #1e88e5; 
   }
   
   .transaction-item .transaction-amount {
     font-weight: bold;
-    color: #388e3c; /* Green for positive amounts */
-  }
+    color: #388e3c; }
   
   .transaction-item .transaction-amount.negative {
-    color: #d32f2f; /* Red for negative amounts */
+    color: #d32f2f; 
   }
   
-  /* Responsive layout for smaller screens */
+  
   @media (max-width: 768px) {
     .transaction-page {
       padding: 15px;
@@ -177,7 +173,7 @@
     }
   
     main {
-      flex-direction: column; /* Stack form and list vertically */
+      flex-direction: column; 
       gap: 20px;
     }
   
@@ -195,4 +191,4 @@
       padding: 15px;
     }
   }
-  
+   */

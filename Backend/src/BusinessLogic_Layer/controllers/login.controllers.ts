@@ -13,6 +13,7 @@ class LoginController {
     const { email, password } = req.body;
     
     try {
+      console.log(email +" "+ password)
       // Call service method to authenticate the user
       const user = await this.loginService.loginUser(email, password, res);
 

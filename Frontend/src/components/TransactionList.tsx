@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { transactionsService } from '../services/transactions.service';
 import { Transaction, TransactionFilters } from '../types/transaction';
-import './TransactionList.css';  // Import the CSS file
 
 const TransactionList: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -40,20 +39,21 @@ const TransactionList: React.FC = () => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">An error occurred: {error}</div>;
+  if (loading) return <div className="loading-message">Loading...</div>;
+  if (error) return <div className="error-message">An error occurred: {error}</div>;
 
   return (
-    <div className="transaction-list">
-      <h3>Transaction List</h3>
-      <div className="filters">
-        <select name="date" onChange={handleFilterChange} value={filters.date || ''}>
+    <div className='transactionlist'>
+    <div className="transaction-list-container">
+      <h3 className="transaction-list-header">Transaction List</h3>
+      <div className="filters-container">
+        <select name="date" onChange={handleFilterChange} value={filters.date || ''} className="filters-select">
           <option value="">All Time</option>
           <option value="last-week">Last Week</option>
           <option value="last-month">Last Month</option>
           <option value="last-year">Last Year</option>
         </select>
-        <select name="category" onChange={handleFilterChange} value={filters.category || ''}>
+        <select name="category" onChange={handleFilterChange} value={filters.category || ''} className="filters-select">
           <option value="">All Categories</option>
           <option value="Household Expenses">Household Expenses</option>
           <option value="entertainment">Entertainment</option>
@@ -76,10 +76,10 @@ const TransactionList: React.FC = () => {
           <option value="salary">Salary</option>
         </select>
       </div>
-      <div className="transaction-table">
-        <table>
+      <div className="transaction-table-container">
+        <table className="transaction-table">
           <thead>
-            <tr>
+            <tr className="transaction-table-header">
               <th>Type</th>
               <th>Category</th>
               <th>Amount</th>
@@ -88,17 +88,17 @@ const TransactionList: React.FC = () => {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="transaction-table-body">
             {transactions.map((transaction) => (
-              <tr key={transaction._id}>
-                <td>{transaction.type}</td>
-                <td>{transaction.category.category}</td>
-                <td className={transaction.type == 'expense' ? 'negative' : 'positive'}>
-                  {transaction.type == 'expense' ? '-' : '+'} ${Math.abs(transaction.amount).toFixed(2)}
+              <tr key={transaction._id} className="transaction-table-row">
+                <td className="transaction-type">{transaction.type}</td>
+                <td className="transaction-category">{transaction.category.category}</td>
+                <td className={`transaction-amount ${transaction.type === 'expense' ? 'negative' : 'positive'}`}>
+                  {transaction.type === 'expense' ? '-' : '+'} ${Math.abs(transaction.amount).toFixed(2)}
                 </td>
-                <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                <td>{transaction.description}</td>
-                <td>
+                <td className="transaction-date">{new Date(transaction.date).toLocaleDateString()}</td>
+                <td className="transaction-description">{transaction.description}</td>
+                <td className="transaction-actions">
                   <button onClick={() => handleDelete(transaction._id)} className="delete-btn">
                     Delete
                   </button>
@@ -108,6 +108,7 @@ const TransactionList: React.FC = () => {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };

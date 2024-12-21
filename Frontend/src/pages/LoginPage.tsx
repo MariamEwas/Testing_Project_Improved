@@ -1,14 +1,17 @@
-import React from 'react'
-import  {Link} from 'react-router-dom'
-
-const LoginPage = () => {
+import {Login} from "../components/login";
+import "../styles/login.css"
+function LoginPage() {
   return (
     <div>
-      <h1>Hello from LoginPage</h1>
-      <Link to="/home">Home</Link>   
-      {/* implement the code of the login and we want a button for register ,too */}
+    <header className="login-header">
+    <h1 className="title">Personal Finance Tracker</h1>
+    <p className="subtitle">Your journey to financial freedom starts here</p>
+    </header>
+    <div className="login-page-container">
+      <Login/>
     </div>
-  )
+    </div>
+  );
 }
 
-export default LoginPage
+export default LoginPage;
