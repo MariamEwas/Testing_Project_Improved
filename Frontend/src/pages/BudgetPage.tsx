@@ -8,9 +8,9 @@ import Layout from '../components/layout';
 const RecommendationPage = () => {
   
   return (
-    <div>
+    <div className='budget'>
       <Layout> </Layout>
-    <div className="page-container">
+    <div className="budget-container">
   <div className="top-section">
     <ShowBudget />
   </div>
