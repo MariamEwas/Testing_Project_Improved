@@ -3,7 +3,7 @@ import Layout from '../components/layout';
 import { profileService } from '../services/profile.services';
 import '../styles/layout.css';
 import '../styles/dashbored.css';
-import  {visService}  from"../services/visservices"
+import { visService } from "../services/card.service";
 import { Transaction } from '../types/transaction';
 import { transactionsService } from '../services/transactions.service';
 
@@ -23,18 +23,15 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-          const filters = {
-            date: "2023-12-22", // Example filter
-            category: "Groceries", // Example filter
-          };
-      
-          const filteredTransactions = await transactionsService.getAllTransactions(filters);
-      
-          setTransactions(filteredTransactions);
-  
-        // Prepare data for the chart
-        const labels = filteredTransactions.map((transaction: Transaction) => transaction.date); // Dates for x-axis
-        const amounts = filteredTransactions.map((transaction: Transaction) => transaction.amount); // Amounts for y-axis
+        const filters = {
+          date: "2023-12-22",
+          category: "Groceries",
+        };
+        const filteredTransactions = await transactionsService.getAllTransactions(filters);
+        setTransactions(filteredTransactions);
+
+        const labels = filteredTransactions.map((transaction: Transaction) => transaction.date);
+        const amounts = filteredTransactions.map((transaction: Transaction) => transaction.amount);
 
         setChartData({
           labels,
@@ -56,52 +53,45 @@ const DashboardPage: React.FC = () => {
 
     fetchTransactions();
   }, []);
+
   useEffect(() => {
     const fetchTotalIncomeAndExpenses = async () => {
       try {
-        const response = await visService.getTotalIncomeAndExpenses(); 
-      
-        setTotalIncomeAndExpenses(response)
+        const response = await visService.getTotalIncomeAndExpenses();
+        setTotalIncomeAndExpenses(response);
       } catch (error) {
         console.error("Error fetching total income and expenses:", error);
       }
     };
-  
+
     fetchTotalIncomeAndExpenses();
   }, []);
+
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
     phone: '',
   });
-  const toggleUpdateProfileForm = () => {
-    setShowUpdateProfileForm((prev) => !prev);
-  };
-  
-  const toggleChangePasswordForm = () => {
-    setShowChangePasswordForm((prev) => !prev);
-  };
+  const toggleUpdateProfileForm = () => setShowUpdateProfileForm((prev) => !prev);
+  const toggleChangePasswordForm = () => setShowChangePasswordForm((prev) => !prev);
 
   const [passwordData, setPasswordData] = useState({
     email: '',
     password: '',
   });
 
-    // Pie chart data
-    const pieData = totalIncomeAndExpenses && {
-      labels: ['Income', 'Expenses'],
-      datasets: [
-        {
-          data: [totalIncomeAndExpenses.income, totalIncomeAndExpenses.expenses],
-          backgroundColor: ['#36A2EB', '#FF6384'],
-          hoverBackgroundColor: ['#36A2EB', '#FF6384'],
-        },
-      ],
-    };
+  const pieData = totalIncomeAndExpenses && {
+    labels: ['Income', 'Expenses'],
+    datasets: [
+      {
+        data: [totalIncomeAndExpenses.income, totalIncomeAndExpenses.expenses],
+        backgroundColor: ['#36A2EB', '#FF6384'],
+        hoverBackgroundColor: ['#36A2EB', '#FF6384'],
+      },
+    ],
+  };
 
-    
   useEffect(() => {
-    // Fetch the profile when the component mounts
     const fetchProfile = async () => {
       try {
         const data = await profileService.getProfile();
@@ -110,193 +100,109 @@ const DashboardPage: React.FC = () => {
         setError(err.message || 'Failed to load profile');
       }
     };
-
     fetchProfile();
   }, []);
 
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileData({
-      ...profileData,
-      [name]: value,
-    });
-  };
+  const [maxExpense, getMaxExpense] = useState<number | null>(null);
+  const [minExpense, getMinExpense] = useState<number | null>(null);
+  const [balance, getBalance] = useState<number | null>(null);
+  const [spentLast12Months, getSpentLast12Months] = useState<number | null>(null);
+  const [spentLast30Days, getSpentLast30Days] = useState<number | null>(null);
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPasswordData({
-      ...passwordData,
-      [name]: value,
-    });
-  };
+  useEffect(() => {
+    const fetchCardData = async () => {
+      try {
+        const maxExpenseData = await visService.getMaxExpense();
+        getMaxExpense(maxExpenseData);
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await profileService.updateProfile(profileData);
-      setShowUpdateProfileForm(false); // Hide the form after submission
-      setError(''); // Clear any previous error
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile');
-    }
-  };
+        const minExpenseData = await visService.getMinExpense();
+        getMinExpense(minExpenseData);
 
-  const handleChangePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await profileService.changePassword(passwordData);
-      setShowChangePasswordForm(false); // Hide the form after submission
-      setError(''); // Clear any previous error
-    } catch (err: any) {
-      setError(err.message || 'Failed to change password');
-    }
-  };
+        const balanceData = await visService.getBalance();
+        getBalance(balanceData);
+
+        const spent12Months = await visService.getSpentLast12Months();
+        getSpentLast12Months(spent12Months);
+
+        const spent30Days = await visService.getSpentLast30Days();
+        getSpentLast30Days(spent30Days);
+      } catch (error) {
+        console.error("Error fetching card data:", error);
+      }
+    };
+
+    fetchCardData();
+  }, []);
 
   return (
     <Layout>
-      
-      <div className='dashboard-page'>
-      <div className="dashboard-container">
-        {/* Profile Section */}
-        <div className="profile-section">
-          {error && <p className="error-message">{error}</p>}
-          {profile ? (
-            <div className="profile-details">
-              <h2 className="greeting">Hello, {profile.name}!</h2>
-              <p className="profile-item"><strong>Email:</strong> {profile.email} </p>
-              <p className="profile-item"><strong>Phone:</strong> {profile.phone}</p>
-              {/* Update Profile Button */}
-              <button onClick={toggleUpdateProfileForm}>
-  {showUpdateProfileForm ? 'Hide Update Profile' : 'Update Profile'}
-</button>
-<button onClick={toggleChangePasswordForm}>
-  {showChangePasswordForm ? 'Hide Change Password' : 'Change Password'}
-</button>
-            </div>
-          ) : (
-            <p>Loading profile...</p>
-          )}
-        </div>
+      <div className="dashboard-page">
+        <div className="dashboard-container">
+          <div className="profile-section">
+            {error && <p className="error-message">{error}</p>}
+            {profile ? (
+              <div className="profile-details">
+                <h2>Hello, {profile.name}!</h2>
+                <p><strong>Email:</strong> {profile.email}</p>
+                <p><strong>Phone:</strong> {profile.phone}</p>
+                <button onClick={toggleUpdateProfileForm}>
+                  {showUpdateProfileForm ? 'Hide Update Profile' : 'Update Profile'}
+                </button>
+                <button onClick={toggleChangePasswordForm}>
+                  {showChangePasswordForm ? 'Hide Change Password' : 'Change Password'}
+                </button>
+              </div>
+            ) : (
+              <p>Loading profile...</p>
+            )}
+          </div>
 
-        {/* Update Profile Form */}
-        {showUpdateProfileForm && (
-          <form onSubmit={handleUpdateProfile}>
-            <div>
-              <label>Name:</label>
-              <input
-                type="text"
-                name="name"
-                value={profileData.name}
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={profileData.email}
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Phone:</label>
-              <input
-                type="text"
-                name="phone"
-                value={profileData.phone}
-                onChange={handleProfileChange}
-                required
-              />
-            </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowUpdateProfileForm(false)}>
-              Cancel
-            </button>
-          </form>
-        )}
+          <hr className="divider-line" />
 
-        {/* Change Password Form */}
-        {showChangePasswordForm && (
-          <form onSubmit={handleChangePassword}>
-            <div>
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={passwordData.email}
-                onChange={handlePasswordChange}
-                required
-              />
-            </div>
-            <div>
-              <label>New Password:</label>
-              <input
-                type="password"
-                name="password"
-                value={passwordData.password}
-                onChange={handlePasswordChange}
-                required
-              />
-            </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowChangePasswordForm(false)}>
-              Cancel
-            </button>
-          </form>
-        )}
+          <div className="dashboard-content">
+            <h1>Welcome to Your Dashboard</h1>
+            <p>Here is a summary of your financial activity.</p>
+          </div>
 
-        {/* Pink Line Divider */}
-        <hr className="divider-line" />
-
-        {/* Dashboard Content */}
-        <div className="dashboard-content">
-          <h1 className="dashboard-heading">Welcome to Your Dashboard</h1>
-          <p className="dashboard-description">Here is a summary of your financial activity.</p>
-          <p className="love-message">Love You mariooom ❤️❤️😉</p>
-        </div>
-          {/* Visualization Section */}
           <div className="visualization-section">
             <h2>Financial Overview</h2>
-            <div className='pie'>
-            {totalIncomeAndExpenses && (
-            <div className="chart-container">
-            <h3>Income vs Expenses</h3>
-            {totalIncomeAndExpenses ? (
-              <Pie  data={pieData} />
-            ) : (
-              <div className="skeleton">Loading Chart...</div>
-            )}
+            <div className="pie-and-cards-container">
+              <div className="pie">
+                <h3>Income vs Expenses</h3>
+                {totalIncomeAndExpenses ? <Pie data={pieData} /> : <p>Loading Chart...</p>}
+              </div>
+              <div className="cards-section">
+                <h3>Your Financial Highlights</h3>
+                <div className="cards-container">
+                  <div className="card"><h4>Max Expense</h4><p>{maxExpense ? `$${maxExpense}` : "Loading..."}</p></div>
+                  <div className="card"><h4>Min Expense</h4><p>{minExpense ? `$${minExpense}` : "Loading..."}</p></div>
+                  <div className="card"><h4>Balance</h4><p>{balance ? `$${balance}` : "Loading..."}</p></div>
+                  <div className="card"><h4>Spent (Last 12 Months)</h4><p>{spentLast12Months ? `$${spentLast12Months}` : "Loading..."}</p></div>
+                  <div className="card"><h4>Spent (Last 30 Days)</h4><p>{spentLast30Days ? `$${spentLast30Days}` : "Loading..."}</p></div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3>Transaction Line Graph</h3>
+              {chartData ? (
+                <Line
+                  data={chartData}
+                  options={{
+                    responsive: true,
+                    plugins: { legend: { display: true, position: "top" } },
+                    scales: {
+                      x: { title: { display: true, text: "Date" } },
+                      y: { title: { display: true, text: "Amount" } },
+                    },
+                  }}
+                />
+              ) : (
+                <p>Loading Chart...</p>
+              )}
+            </div>
           </div>
-            )}
-           </div>
-           <div>
-      <h3>Transaction Line Graph</h3>
-      <div className="Line">
-      {chartData ? (
-        <Line
-          data={chartData}
-          options={{
-            responsive: true,
-            plugins: {
-              legend: { display: true, position: "top" },
-            },
-            scales: {
-              x: { title: { display: true, text: "Date" } },
-              y: { title: { display: true, text: "Amount" } },
-            },
-          }}
-        />
-      ) : (
-        <p>Loading chart...</p>
-      )}
-    </div>
-    </div>
-          </div>
-      </div>
-       
+        </div>
       </div>
     </Layout>
   );
