@@ -21,12 +21,35 @@ export const visService = {
   // Fetch spending data for the last 30 days for the line chart
   async getSpentLast30Days() {
     const response = await api.get('/spent-in-last-30-days');
-    return response; // Assuming this is an array of daily spending
+    console.log(response);
+    return response.data.totalSpent30Days; // Assuming this is an array of daily spending
   },
+
 
   // Fetch spending data for the last 12 months for the line chart
   async getSpentLast12Months() {
     const response = await api.get('/spent-in-last-12-months');
+    console.log(response);
     return response.data.totalSpent12Months; // Assuming this is an array of monthly spending
   },
+
+
+async getBalance( queryParams: Record<string, any> = {}): Promise<number> {
+  const response = await api.get(`/balance`, { params: {  ...queryParams } });
+  console.log(response);
+  return response.data.balance;
+},
+
+async getMinExpense( queryParams: Record<string, any> = {}): Promise<number> {
+  const response = await api.get(`/min-expense`, { params: {  ...queryParams } });
+  console.log(response);
+  return response.data.minExpense;
+  
+},
+
+async getMaxExpense( queryParams: Record<string, any> = {}): Promise<number> {
+  const response = await api.get(`/max-expense`, { params: {  ...queryParams } });
+  console.log(response);
+  return response.data.maxExpense;
+},
 };
