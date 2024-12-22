@@ -71,14 +71,14 @@
   /* Title and Subtitle */
   .title {
     font-size: 50px;
-    color: #6c63ff; /* Soft pastel pink */
+    color:  #4b2c7f; /* Soft pastel pink */
     margin-bottom: 5%;
     text-align: center;
   }
   
   .subtitle {
     font-size: 18px;
-    color: #9a91f7; /* Light purple */
+    color: #6c63ff; /* Light purple */
     margin-bottom: 5%;
     text-align: center;
   }

@@ -9,7 +9,7 @@ const ShowRecommendations = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 2;
 
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -52,7 +52,7 @@ const ShowRecommendations = () => {
   return (
     <div className="p-4">
       <h2>Recommendations</h2>
-      <table style={{maxWidth:600}}> 
+      <table style={{maxWidth:500}}> 
         <tbody>
           {currentRecommendations.map((recommendation) => (
             <tr key={recommendation._id}>
@@ -61,6 +61,7 @@ const ShowRecommendations = () => {
           ))}
         </tbody>
       </table>
+      <div className='pagination'>
         <button onClick={handlePreviousPage} disabled={currentPage === 1}> Previous </button>
         <span>
           Page {currentPage} of {totalPages}
@@ -68,7 +69,9 @@ const ShowRecommendations = () => {
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>
           Next
         </button>
+        </div >
       </div>
+   
   );
 };
 

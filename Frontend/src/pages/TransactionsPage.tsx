@@ -11,12 +11,15 @@ const TransactionPage: React.FC = () => {
     <div>
       <Layout> </Layout>
       <div className="transaction-page">
- 
-        <h1>Transaction Management</h1>
-  
+      <h1>Transaction Management</h1>
+      <div className="transaction-container">
+        <div className='add '>
           <AddTransaction />
-    
+          </div >
+          <div className='list'>
           <TransactionList />
+          </div>
+          </div>
  
     </div>
     </div>

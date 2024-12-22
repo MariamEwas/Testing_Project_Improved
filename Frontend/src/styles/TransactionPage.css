@@ -1,194 +1,259 @@
-/* 
+/* General Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7fb; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    color: #333;
-  }
-  
- 
-  .transaction-page {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    background-color: #f4f7fb; 
-  }
-  header {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    color: #1e88e5; 
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  main {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
-    gap: 40px;
-    flex-wrap: wrap;
-    background-color: #f4f7fb; 
-  }
-  
+html, body {
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+}
 
-  .add-transaction {
-    flex: 1; 
-    max-width: 600px;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-  }
-  
-  .add-transaction form {
-    font-size: 1.1rem;
-  }
-  
-  .add-transaction form div {
-    margin-bottom: 20px;
-  }
-  
-  .add-transaction label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-  }
-  
-  .add-transaction input,
-  .add-transaction select {
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-    background-color: #f7f7f7;
-    transition: border-color 0.3s ease;
-  }
-  
-  .add-transaction input:focus,
-  .add-transaction select:focus {
-    border-color: #1e88e5; 
-    outline: none;
-  }
-  
-  .add-transaction button {
-    background-color: #1e88e5; 
-    color: #fff;
-    border: none;
-    padding: 12px;
-    font-size: 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-transaction button:disabled {
-    background-color: #b0bec5;
-  }
-  
-  .add-transaction button:hover:enabled {
-    background-color: #1565c0; 
-  }
-  
+/* Transaction Page Styles */
+.transaction-page {
+  width: 100%;
+  padding: 0%;
+  min-height: 100vh;
+}
 
-  .transaction-list {
-    flex: 2; 
-    width: 100%;
-    max-width: 800px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    font-size: 1rem;
-  }
-  
-  .transaction-list h3 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .transaction-item {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    transition: all 0.3s ease;
-  }
-  
-  .transaction-item:hover {
-    background: #e8f5e9; 
-    transform: scale(1.02);
-  }
-  
-  .transaction-item p {
-    font-size: 1rem;
-    color: #555;
-    margin: 5px 0;
-  }
-  
-  .transaction-item .transaction-type {
-    font-weight: 600;
-    color: #1e88e5; 
-  }
-  
-  .transaction-item .transaction-amount {
-    font-weight: bold;
-    color: #388e3c; }
-  
-  .transaction-item .transaction-amount.negative {
-    color: #d32f2f; 
-  }
-  
-  
-  @media (max-width: 768px) {
-    .transaction-page {
-      padding: 15px;
-    }
-  
-    h1 {
-      font-size: 2rem;
-    }
-  
-    main {
-      flex-direction: column; 
-      gap: 20px;
-    }
-  
-    .add-transaction,
-    .transaction-list {
-      width: 100%;
-    }
-  
-    .add-transaction {
-      max-width: 100%;
-      padding: 20px;
-    }
-  
-    .transaction-list {
-      padding: 15px;
-    }
-  }
-   */
+.transaction-page h1 {
+  text-align: center;
+  color: #4b2c7f; /* Soft pastel purple */
+  margin-bottom: 30px;
+}
+
+.transaction-container {
+
+  display: flex;
+  justify-content: space-between;
+  gap: 30px; /* Space between Add and List */
+}
+
+.add {
+  width: 48%; /* Adjust width to fit both sections side by side */
+}
+
+.list {
+  width: 48%;
+}
+
+/* Add Transaction Styles */
+.add-transaction-container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-transaction {
+  background: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  color: #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: popIn 0.5s ease;
+  overflow-y: auto;
+}
+
+/* Pop In Animation */
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+
+
+.form-header {
+  text-align: center;
+  color: #4b2c7f;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Transaction List Styles */
+.transactionlist {
+  width: 650px;
+  margin: 0 auto;
+}
+
+.add-transaction:hover,.transaction-list-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+.transaction-list-container {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px 10px; 
+  animation: popIn 0.5s ease;
+
+}
+
+.transaction-list-header {
+  text-align: center;
+  color: #4b2c7f;
+  font-size: 28px;
+  margin-bottom: 20px;
+  border-radius: 100px;
+}
+
+.filters-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.filters-select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.7);
+  max-height: 500px; 
+  overflow-y: auto;
+}
+
+.filters-select:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.transaction-table-container {
+  margin-top: 30px;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table-header th {
+  background-color: #6c63ff;
+  color: white;
+  padding: 20px;
+  text-align: left;
+  font-size: 16px;
+
+}
+
+.transaction-table-body tr {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  padding: 5px;
+}
+
+.transaction-table-body tr:hover {
+  background-color: #f1f1f1;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.transaction-amount.negative {
+  color: #ff6b6b; /* Red for expenses */
+}
+
+.transaction-amount.positive {
+  color: #4caf50; /* Green for income */
+}
+
+.transaction-actions {
+  text-align: center;
+}
+
+.delete-btn {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-btn:hover {
+  background-color: #ff3b3b;
+}
+
+.delete-btn:active {
+  transform: scale(0.98);
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 16px;
+  color: #6c63ff;
+  margin-bottom: 10px;
+}
+
+.form-control {
+  width: 300px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+
+  max-height: 500px; 
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ff85b2, #9a91f7);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin: 0 10px;
+}
+
+.pagination-btn:hover {
+  background-color: #4b2c7f; /* Darker purple on hover */
+}
+
+.pagination-btn:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination-page {
+  font-size: 16px;
+  color: #333;
+}
