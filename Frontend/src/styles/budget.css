@@ -1,101 +1,209 @@
-/* 
-.budget-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 16px;
-    padding: 16px;
-  }
-  
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
-  .budget-item {
-    border: 1px solid #ccc;
-    padding: 16px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .budget-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  }
-  
+/* Scope the styles with .dashboard-page */
+html, body, .budget {
+  overflow-y: auto; /* Enable scrolling for the body */
+}
 
-  .budget-category {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 8px;
-  }
-  
-
-  .budget-image {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
-
-  .budget-value {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 4px;
-  }
-  
-
-  h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 16px;
-    font-weight: 600;
-  }
- 
-  
-  p {
-    text-align: center;
-    margin: 20px 0;
-    color: #aaa;
-  }
-  
-
-  .limit-slider {
-    width: 70px;
-    margin: 10px 0;
-  }
-
-
-.page-container {
+/* Container for the entire page */
+.budget-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;  
   padding: 20px;
+  margin: auto;
+  max-width: 1200px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow-y: auto;
 }
 
-
+/* Top section (for ShowBudget) */
 .top-section {
-  width: 100%;
-  margin-bottom: 30px; 
-  border-bottom: 1px solid #ccc;
-  padding-bottom:10px;
+  margin-bottom: 20px;
+  overflow-y: auto;
 }
 
-
+/* Bottom section (container for left and right sections) */
 .bottom-section {
-  margin-top: 20px;
   display: flex;
-  justify-content: space-between;  
-  gap: 40px;  
+  justify-content: space-between;
+  gap: 20px;  /* Adds space between left and right sections */
+  overflow-y: auto;
 }
 
-
+/* Left section (for GenerateRecommendation) */
 .left-section {
-  flex: 1;  
-  min-width: 200px; 
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Right section (for ShowRecommendations) */
+.right-section {
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Budget Styles */
+.budget {
+  padding: 10px;
+}
+
+.budget-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: auto;
+  max-width: 1200px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.budget-item {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.budget-category,
+.budget-value {
+  font-size: 1rem;
+}
+
+.budget-value {
+  display: block;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.budget-value input {
+  flex-grow: 1;
+  margin-right: 15px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+.budget button{
+  background-color: #4caf50;
+  margin-top: 20px;
+  border-radius: 5px;
+  height: 60px;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  font-size: large ;
+ 
+}
+
+.budget-value button {
+  padding: 8px 15px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px ;
+  width :70px;
+  font-size: small;
+  height: auto;
+}
+
+.budget-value button:hover {
+  background-color: #45a049;
+}
+
+.budget-image img {
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0;
+  font-size: small;
+  height: auto;
+}
+
+.pagination button:disabled {
+  background-color: #d6d6d6;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
 }
 
 
-.right-section {
-  flex: 1;  
-  min-width: 200px;  
-}    */
+/* Container for the recommendations section */
+.recommendation-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title of the recommendations section */
+.recommendation-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* List of recommendations */
+.recommendation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Individual recommendation item */
+.recommendation-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-item:hover {
+  background-color: #f1f1f1;
+}

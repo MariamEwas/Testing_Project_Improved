@@ -109,6 +109,7 @@ const AddTransaction: React.FC = () => {
             className="form-control"
           >
             <option value="" disabled>Select a category</option>
+            
             {categories.map((category) => (
               <option key={category._id} value={category._id}>{category.category}</option>
             ))}
