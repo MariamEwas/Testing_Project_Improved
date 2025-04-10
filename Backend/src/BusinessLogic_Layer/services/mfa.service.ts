@@ -5,7 +5,7 @@ class MfaService {
   // Generate a secret and OTPAuth URL
   generateSecret(email: string) {
     const secret = speakeasy.generateSecret({
-      name: MyApp (${email}), // You can name this based on your app
+      name: `MyApp (${email})`, // You can name this based on your app
     });
 
     return {
