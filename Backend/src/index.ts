@@ -8,7 +8,9 @@ import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes';
 import cookieParser from 'cookie-parser';
 import visRouter from './BusinessLogic_Layer/routes/vis.routes';
 import CategoryRouter from './BusinessLogic_Layer/routes/category.routes';
-
+import MfaController from './BusinessLogic_Layer/controllers/mfa.controller'; 
+// Add this import with your other route imports
+import mfaRouter from './BusinessLogic_Layer/routes/mfa.routes';
 import cors from 'cors'; 
 
 let express = require('express');
@@ -50,6 +52,7 @@ app.use('/api/auth/login', loginRouter);
 app.use('/api/auth/logout', logoutRouter);
 app.use('/api/auth/profile', profileRouter);
 app.use('/api/auth/reg', regRouter);
+app.use('/api/auth/mfa', mfaRouter);
 app.use('/recommendation', RecommendationRouter);
 app.use('/budgets', BudgetRouter);
 app.use('/transactions', TransactionRouter);
