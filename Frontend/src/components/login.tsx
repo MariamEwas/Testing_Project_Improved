@@ -21,7 +21,12 @@ export const Login = () => {
 
       setError('');
       setMessage(response.message);
-      navigate('/dashboard');
+      navigate('/mfa',  { 
+        state: { 
+          email,
+          // Include any other MFA setup data from the response
+          isSetup: response.mfaSetupRequired 
+        } })
     } catch (err: any) {
       setError(err.response?.data?.error || 'Something went wrong');
     }

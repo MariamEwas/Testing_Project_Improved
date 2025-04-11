@@ -4,6 +4,7 @@ import TransactionPage from './pages/TransactionsPage';
 import BudgetPage from './pages/BudgetPage';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
+import { MFAPage } from './pages/MFAPage';
 
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
     <div>
       <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage/>} /> 
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/mfa" element={<MFAPage />} /> 
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/transactions" element={<TransactionPage />} />
         <Route path="/recommendations" element={<BudgetPage />} />
