@@ -1,59 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import { visService } from '../services/card.service';  // assuming this service is in place
+import { visService } from '../services/card.service';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend, ChartOptions, TooltipItem } from 'chart.js';
-import '../styles/IncomeBar.css'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  TooltipItem,
+} from 'chart.js';
+import '../styles/IncomeBar.css';
 
-// Registering required chart.js components
+// Register chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const IncomeBar: React.FC = () => {
+// Props to optionally receive filters
+interface IncomeBarProps {
+  queryParams?: {
+    month?: string;
+    year?: string;
+  };
+}
+
+const IncomeBar: React.FC<IncomeBarProps> = ({ queryParams = {} }) => {
   const [incomeData, setIncomeData] = useState<{ category: string; total: number }[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const fetchIncomeBySource = async () => {
+      setLoading(true);
+      setError('');
       try {
-        // Assuming `visService.getIncomeBySource` is correctly implemented to fetch the data
-        const response = await visService.getIncomeBySource();
-        setIncomeData(response);
+        const response = await visService.getIncomeBySource(queryParams);
+        setIncomeData(response || []);
       } catch (err: any) {
-        setError('Failed to fetch income data');
         console.error(err);
+        setError('Failed to fetch income data.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchIncomeBySource();
-  }, []);
+  }, [JSON.stringify(queryParams)]); // Refetch when filters change
 
   const chartData = {
-    labels: incomeData.map(item => item.category), // Categories on the X-axis
+    labels: incomeData.map((item) => item.category),
     datasets: [
       {
         label: 'Income by Source',
-        data: incomeData.map(item => item.total), // Total income for each category
-        backgroundColor: '#36A2EB', // Color for the bars
+        data: incomeData.map((item) => item.total),
+        backgroundColor: '#36A2EB',
         borderColor: '#36A2EB',
         borderWidth: 1,
       },
     ],
   };
 
-  // Explicitly type chartOptions as ChartOptions<'bar'>
   const chartOptions: ChartOptions<'bar'> = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top', // Valid values: 'top', 'right', 'bottom', 'left', 'center'
+        position: 'top',
       },
       tooltip: {
         callbacks: {
           label: (context: TooltipItem<'bar'>) => {
-            const value = context.raw as number; // Cast value to a number
-            return `$${value.toFixed(2)}`; // Display value as currency
+            const value = context.raw as number;
+            return `$${value.toFixed(2)}`;
           },
         },
       },
@@ -66,22 +83,19 @@ const IncomeBar: React.FC = () => {
         },
       },
       y: {
+        beginAtZero: true,
         title: {
           display: true,
           text: 'Total Income ($)',
         },
-        beginAtZero: true, // Ensures the y-axis starts at zero
       },
     },
   };
 
-  if (loading) {
-    return <div>Loading income data...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // Render states
+  if (loading) return <div>Loading income data...</div>;
+  if (error) return <div className="error-text">{error}</div>;
+  if (!incomeData.length) return <div>No income data for the selected filter.</div>;
 
   return (
     <div className="income-bar-container">
