@@ -27,23 +27,35 @@ private isValidObjectId(id: string): boolean {
   }
 
   async getAllTransactions(userId: string, queryParams: any) {
-    let filter: Record<string, any> = { userId }; // Base filter for the user
+    let filter: Record<string, any> = { userId }; // Base filter
   
-    // Apply date filter if provided
-    if (queryParams.date) {
+    // Filter by month and year (if both provided)
+    if (queryParams.month && queryParams.year) {
+      const year = parseInt(queryParams.year);
+      const month = parseInt(queryParams.month) - 1;
+  
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 1);
+  
+      filter.date = { $gte: startDate, $lt: endDate };
+    }
+  
+    // Filter by relative date range (optional)
+    else if (queryParams.date) {
       filter.date = { $gte: this.getStartDate(queryParams.date) };
     }
   
-    // Apply category filter if provided
+    // Filter by category name (optional)
     if (queryParams.category) {
       const categoryFilter = await this.getCategoryFilter(queryParams.category);
       if (categoryFilter) {
-        filter.category = { $in: categoryFilter }; // Match ObjectId(s) of categories
+        filter.category = { $in: categoryFilter };
       }
     }
   
     return await this.transactionModel.find(filter).populate('category');
   }
+  
   
   // Single responsibility: Extract logic to calculate start date
   private getStartDate(dateRange: string): Date {

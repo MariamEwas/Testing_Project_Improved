@@ -152,11 +152,13 @@ async getIncomeBySource(req: Request & { user?: JwtPayload }, res: Response): Pr
              return;
         }
 
-        const incomeSources = await this.visService.getIncomeBySource(userId);
+        //Pass query params to support month/year filter
+        const incomeSources = await this.visService.getIncomeBySource(userId, req.query);
         res.status(200).json({ incomeSources });
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 }
+
 }
 export default VisController; 
