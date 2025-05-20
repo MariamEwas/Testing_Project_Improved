@@ -8,6 +8,7 @@ import TransactionRouter from './BusinessLogic_Layer/routes/transaction.routes';
 import cookieParser from 'cookie-parser';
 import visRouter from './BusinessLogic_Layer/routes/vis.routes';
 import CategoryRouter from './BusinessLogic_Layer/routes/category.routes';
+import chatbot from './BusinessLogic_Layer/routes/chatbot.routes';
 
 import cors from 'cors'; 
 let express = require('express');
@@ -54,6 +55,7 @@ app.use('/budgets', BudgetRouter);
 app.use('/transactions', TransactionRouter);
 app.use('/analytics', visRouter);
 app.use('/category', CategoryRouter);
+app.use('/gemini',chatbot)
 
 // Start the server
 app.listen(PORT, () => {
