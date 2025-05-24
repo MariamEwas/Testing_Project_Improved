@@ -63,3 +63,9 @@ app.listen(PORT, () => {
 }).on('error', (err: any) => {
   console.error('Failed to start the server:', err);
 });
+
+//cd Backend , npm i
+// npm install @google/generative-ai 
+// npm install multer                                                                  
+// npm install --save-dev @types/multer     
+// npm install tesseract.js
